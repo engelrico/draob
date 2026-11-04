@@ -1,18 +1,158 @@
-# MiroHero
+<p align="center">
+  <img src="docs/assets/hero.png" alt="MiroHero: Board-Passwörter verschlüsselt, durchsuchbar, mit einem Klick eingefügt" width="100%">
+</p>
 
-Chrome-Extension (Manifest V3) zum Speichern von Passwörtern für Miro-Boards.
-**Status:** früher Prototyp. Passwörter werden mit einem Masterpasswort verschlüsselt (siehe `docs/decisions/ADR-0001-key-management.md`); Export/Import und echte Optionen fehlen noch.
+<h3 align="center">Schluss mit „Wie war nochmal das Passwort für dieses Board?“</h3>
+
+<p align="center">
+  MiroHero ist eine Chrome-Extension, die die Passwörter deiner Miro-Boards verschlüsselt speichert,
+  das richtige Board beim Öffnen erkennt und das Passwort mit einem Klick einfügt.
+</p>
+
+<p align="center">
+  <b>Lokal</b> · <b>AES-256-verschlüsselt</b> · <b>keine Konten, kein Server, kein Tracking</b>
+</p>
+
+> **Status: früher Prototyp.** Alles Beschriebene funktioniert und ist getestet, aber MiroHero ist noch
+> nicht im Chrome Web Store und hatte keine unabhängige Sicherheitsprüfung. Mehr unter
+> [Sicherheit & Ehrlichkeit](#sicherheit--ehrlichkeit).
+
+---
+
+## Warum MiroHero?
+
+Wer mit vielen Kunden, Teams und Workshops arbeitet, hat schnell **20, 30 oder mehr passwortgeschützte
+Miro-Boards**. Die Passwörter liegen in Chats, Notizen und Köpfen. MiroHero macht daraus eine kleine,
+aufgeräumte Schaltzentrale direkt im Browser.
+
+## Das kann es
+
+| | |
+|---|---|
+| 🎯 **Erkennt dein Board** | Öffnest du ein Miro-Board, übernimmt MiroHero URL und Titel. Ist das Board schon gespeichert, lädt es den Eintrag, sonst bietet es ihn als neuen an. |
+| ⚡ **Passwort mit einem Klick** | „In Miro einfügen“ trägt das Passwort in das Feld der Miro-Seite ein. Absenden tust du selbst, MiroHero drückt nie etwas für dich. |
+| 🔎 **Sofort-Suche** | Findet Titel, URL und Tags in Echtzeit, ohne Groß-/Kleinschreibung und Akzente (`cafe` findet `Café`). Mehrere Wörter grenzen weiter ein. |
+| 🏷️ **Tags & Favoriten** | Ordne Boards mit Tags („Kunde A“, „Agil“) und hefte die wichtigsten mit ★ oben an. Filter-Chips zeigen, wie viele Boards jedes Tag hat. |
+| 🧹 **Keine Dubletten** | Pro Miro-Board gibt es genau einen Eintrag, auch wenn die URL mal mit `eu.miro.com` oder Parametern kommt. Bestehende Doppelte führst du mit einem Klick zusammen. |
+| 🔒 **Alles verschlüsselt** | Nicht nur Passwörter: auch Titel, URLs und Tags liegen verschlüsselt im Browser-Speicher. Ohne dein Masterpasswort steht dort nichts Lesbares. |
+| 🟡 **Badge auf Boards** | Auf Miro-Boards zeigt ein goldener Punkt am Icon: „Hier kann ich helfen.“ |
+
+## So sieht es aus
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/home-known.png" alt="Bekanntes Board: Eintrag geladen, Passwort einfügen" width="260"><br><sub><b>Board erkannt:</b> Eintrag geladen, Passwort mit einem Klick einfügen</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/home-new.png" alt="Neues Board: Titel und URL vorausgefüllt" width="260"><br><sub><b>Neues Board:</b> Titel und URL schon ausgefüllt, nur Passwort ergänzen</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/list.png" alt="Liste mit Favoriten, Tags und Zähler" width="260"><br><sub><b>Liste:</b> Favoriten oben, Tags, Zähler</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/search.png" alt="Suche nach „sprint“" width="260"><br><sub><b>Suche:</b> „sprint“ findet vier Boards sofort</sub></td>
+    <td align="center"><img src="docs/screenshots/tags.png" alt="Filter nach Tags Intern und Agil" width="260"><br><sub><b>Tag-Filter:</b> „Intern“ und „Agil“ kombiniert</sub></td>
+    <td align="center"><img src="docs/screenshots/config.png" alt="Doppelte Einträge zusammenführen" width="260"><br><sub><b>Aufräumen:</b> Doppelte zusammenführen</sub></td>
+  </tr>
+</table>
+
+<sub>Screenshots zeigen Beispieldaten.</sub>
+
+## So funktioniert es
+
+1. **Masterpasswort festlegen.** Beim ersten Start legst du ein Masterpasswort fest (mindestens 8 Zeichen).
+   Aus ihm wird der Schlüssel berechnet. MiroHero speichert das Passwort selbst nie.
+2. **Board öffnen, Popup öffnen.** Klick auf das MiroHero-Icon. Neues Board? Passwort eintragen, Tags
+   vergeben, speichern. Bekanntes Board? Der Eintrag ist schon da.
+3. **Einfügen.** „In Miro einfügen“ klicken, in Miro bestätigen. Fertig.
+
+Der Tresor sperrt sich, wenn du Chrome schließt, oder wenn du auf **Sperren** klickst.
+
+## Installation
+
+MiroHero ist noch nicht im Chrome Web Store. Bis dahin installierst du es aus dem Quellcode (Node.js 20+):
+
+```bash
+git clone https://github.com/engelrico/miroHero.git
+cd miroHero
+npm ci
+npm run build
+```
+
+Dann in Chrome:
+
+1. `chrome://extensions` öffnen
+2. **Entwicklermodus** einschalten
+3. **Entpackte Erweiterung laden** und den Ordner `dist/` wählen
+4. Das Icon über das Puzzle-Symbol an die Leiste anheften
+
+Nach einem Update: `npm run build` und in `chrome://extensions` auf **Neu laden** klicken.
+Für das Badge auf einem Board die Miro-Seite einmal neu laden.
+
+## Sicherheit & Ehrlichkeit
+
+**Was MiroHero tut**
+
+- **Verschlüsselung:** AES-256-GCM. Der Schlüssel entsteht aus deinem Masterpasswort mit PBKDF2-SHA-256
+  (600.000 Iterationen, zufälliges Salt).
+- **Alles lokal:** Es gibt keinen Server, keine Konten und keine Analytics. Es wird nichts übertragen.
+- **Kein Klartext im Speicher:** Passwörter, Titel, URLs und Tags liegen in einem verschlüsselten Block.
+  Der abgeleitete Schlüssel lebt nur in `chrome.storage.session` und verschwindet, wenn Chrome beendet wird.
+- **Wenig Rechte:** nur drei Permissions, jede mit einem Zweck:
+
+  | Permission | Wofür |
+  |---|---|
+  | `storage` | den verschlüsselten Tresor lokal speichern |
+  | `activeTab` | URL und Titel des Tabs lesen, den du gerade bewusst über das Icon öffnest |
+  | `scripting` | auf Klick das Passwort ins Feld der Miro-Seite eintragen |
+
+  Das Content-Script läuft ausschließlich auf `miro.com/app/board/*`.
+- **Kein Auto-Submit:** MiroHero füllt nur aus, du bestätigst selbst. Ausgefüllt wird auch nur auf deinen Klick.
+
+**Was du wissen solltest**
+
+- **Vergisst du das Masterpasswort, sind die Daten weg.** Es gibt keine Wiederherstellung (das ist Absicht).
+- MiroHero ist ein **Prototyp ohne unabhängiges Sicherheits-Audit**. Für Hochsicherheits-Zugangsdaten nimm
+  einen etablierten Passwortmanager. Für Board-Passwörter, die sonst in Chat-Verläufen liegen, ist es ein
+  deutlicher Schritt nach vorn.
+- Es gibt noch keinen Auto-Lock nach Zeit und keinen Weg, das Masterpasswort zu ändern.
+- Wer Zugriff auf dein entsperrtes Chrome-Profil hat, kann das Popup benutzen. Sperre den Tresor, wenn du weggehst.
+
+Die technischen Details stehen in [ADR-0001](docs/decisions/ADR-0001-key-management.md) (Schlüsselmodell)
+und [ADR-0002](docs/decisions/ADR-0002-encrypted-vault-v2.md) (Tresor-Format).
+
+## Roadmap
+
+- [x] Verschlüsselter Tresor mit Masterpasswort
+- [x] Board-Erkennung, Passwort-Einfügen per Klick
+- [x] Suche, Tags, Favoriten, Dublettenerkennung
+- [ ] Verschlüsselter Export und Import (Backup, Umzug auf einen anderen Rechner)
+- [ ] Automatisches Sperren nach Zeit, Masterpasswort ändern
+- [ ] Chrome Web Store
+- [ ] Ende-zu-Ende-Tests im echten Browser
+
+Ideen und Wünsche gern als Issue.
 
 ## Entwickeln
+
 ```bash
 npm ci
-npm run build   # → dist/
+npm run build   # baut nach dist/
+npm test        # Unit-Tests (Jest)
+npm run lint    # ESLint
 ```
-In Chrome `chrome://extensions` → Entwicklermodus → "Entpackte Erweiterung laden" → Ordner `dist/`.
 
-Weitere Befehle: `npm test`, `npm run lint`, `npm run format`.
+Stack: React 18, Webpack 5, Manifest V3. Der Quellcode liegt in `src/`, statische Dateien (Manifest, HTML,
+Icons) in `public/`.
 
-## Dokumentation
-Einstieg für Menschen und Agenten: [AGENTS.md](AGENTS.md).
-Details: [Architektur](docs/architecture.md) · [Anforderungen](docs/requirements.md) ·
-[Entscheidungen](docs/decisions/) · [Compliance](docs/compliance.md) · [Manuelle Tests](docs/manual-testing.md)
+| Mehr dazu | |
+|---|---|
+| [AGENTS.md](AGENTS.md) | Einstieg für Mitwirkende und KI-Agenten: Befehle, Regeln, Verzeichnisse |
+| [Architektur](docs/architecture.md) | Komponenten, Datenfluss, Tresor-Schema |
+| [Anforderungen](docs/requirements.md) | Funktionsliste mit Status |
+| [Entscheidungen](docs/decisions/) | Warum der Tresor so gebaut ist |
+| [Compliance](docs/compliance.md) | Stand für den Chrome Web Store |
+| [Manuelle Tests](docs/manual-testing.md) | Testablauf vor einem Release |
+
+## Hinweis
+
+MiroHero ist ein unabhängiges Projekt und **nicht mit Miro verbunden, von Miro unterstützt oder geprüft**.
+„Miro“ ist eine Marke der jeweiligen Inhaberin.
+
+Lizenz: noch nicht festgelegt.

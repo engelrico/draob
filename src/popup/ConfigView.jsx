@@ -34,7 +34,7 @@ export default function ConfigView({ entries, onMerge }) {
             <div key={group[0].id} className="dupe">
               <p>
                 {group.map((e) => e.title).join(' · ')}
-                <span className="muted"> – gleiches Board</span>
+                <span className="muted"> – gleiches Board, „{group[0].title}“ bleibt erhalten</span>
               </p>
               <Button
                 block
@@ -45,7 +45,7 @@ export default function ConfigView({ entries, onMerge }) {
                   )
                 }
               >
-                Zusammenführen (behält „{group[0].title}“)
+                Zusammenführen
               </Button>
             </div>
           ))
