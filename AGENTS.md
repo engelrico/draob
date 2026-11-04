@@ -17,7 +17,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 ## Verzeichnisse
 | Pfad | Inhalt |
 |---|---|
-| `src/background/` | Service Worker (öffnet Popup auf Miro-Boards) |
+| `src/background/` | Service Worker (setzt Badge auf Miro-Board-Tabs) |
 | `src/content/` | Content Script für `miro.com/app/board/*` |
 | `src/popup/`, `src/options/` | React-UIs (je `index.js` + `App.jsx`) |
 | `src/shared/` | Geteilter Code: `crypto.js`, `storage.js`, `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
@@ -59,5 +59,4 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 - Kein Auto-Lock, kein Wechsel des Masterpassworts, keine Drosselung falscher Eingaben (ADR-0001).
 - Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt noch keinen Reset-Weg in der UI.
 - Die Optionsseite hat noch keine echte Wirkung; Export/Import sind nur deaktivierte Buttons.
-- Der Auto-Open des Popups per `openPopup` ist unzuverlässig (braucht meist eine Nutzergeste).
 - E2E-Tests fehlen noch (Playwright geplant).

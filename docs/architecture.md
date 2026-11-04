@@ -2,9 +2,9 @@
 
 ## Komponenten
 ```
-Miro-Tab ── content script (src/content)      noch leer
-              │
-Service Worker (src/background)  ── chrome.tabs.onUpdated ──► action.openPopup()
+Miro-Board-Tab ── content script (src/content) ── sendMessage(BOARD_DETECTED) ─┐
+                                                                               ▼
+Service Worker (src/background/badge.js) ── action.setBadgeText/Title für diesen Tab
               │
 Popup (src/popup, React)  ─┐
 Options (src/options)      └─► src/shared/storage.js ─► crypto.js (PBKDF2, AES-GCM)
@@ -38,6 +38,5 @@ Titel und URL liegen unverschlüsselt (die Liste braucht keinen Schlüssel); nur
 | Schuld | Auswirkung | Plan |
 |---|---|---|
 | Optionen haben nur Theme/Benachrichtigungen ohne Wirkung | kosmetisch | eigene Spec |
-| Auto-Open per `openPopup` | unzuverlässig | Badge oder Side Panel |
 | Kein Auto-Lock, kein Masterpasswort-Wechsel, keine Drosselung | siehe ADR-0001 "Nicht abgedeckt" | eigene Spec |
 | Keine E2E-Tests | UI nur manuell geprüft | Playwright |
