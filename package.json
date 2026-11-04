@@ -1,0 +1,22 @@
+{
+  "name": "mirohero-extension",
+  "version": "1.0.0",
+  "description": "Chrome Extension for secure Miro board password management with React UI and AES encryption.",
+  "main": "background.js",
+  "scripts": {
+    "build": "webpack --config config/webpack.config.js",
+    "start": "npm run build && echo 'Extension built in dist/'"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "@babel/preset-react": "^7.22.0",
+    "babel-loader": "^9.1.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

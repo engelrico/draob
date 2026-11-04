@@ -2,68 +2,10 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>MiroHero</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link zur CSS-Datei -->
-    <script src="popup.js" defer></script>
+    <title>MiroHero Popup</title>
 </head>
 <body>
-    <div class="header">
-        <img src="icons/MH_icon.png" alt="MiroHero Logo" class="logo" style="width: 30px; height: 30px;"> <!-- Logo hier -->
-        <h1>MiroHero</h1>
-        <span class="beer-icon" id="beerIcon" title="Dem Entwickler ein Bier ausgeben">🍺</span>
-        <span class="version">v 0.1</span>
-    </div>
-    <div class="separator"></div>
-    <a class="info" id="infoField"></a>
-    <div class="separator"></div>
-
-    <!--div class="tab">
-        <button class="tab-button active" id="mainTab">Home</button>
-        <button class="tab-button" id="listTab">Liste</button>
-        <button class="tab-button" id="configTab">Config</button>
-        <button class="tab-button" id="aboutTab">About</button>
-    </div-->
-
-    <!-- Hauptinhalt -->
-    <div class="content active-content" id="mainContent">
-        <div class="container">
-            <label for="titleInput">Titel:</label>
-            <input type="text" id="titleInput" placeholder="Titel der Seite" />
-        </div>
-
-        <div class="container">
-            <label for="urlInput">URL:</label>
-            <input type="text" id="urlInput" placeholder="Gib die URL ein" />
-            <!--span class="icon" id="shortenUrl" title="Einkürzen">✨</span-->
-        </div>
-
-        <div class="container">
-            <label for="passwordInput">Passwort:</label>
-            <input type="password" id="passwordInput" placeholder="Gib das Passwort ein" />
-            <span class="icon" id="copyPassword" title="In Zwischenablage">📋</span>
-            <span class="icon" id="togglePassword" title="Anzeigen/Verbergen">👁️</span>
-            <span class="icon" id="savePassword" title="Speichern">💾</span>
-        </div>
-
-        <div class="info" id="passwordCount" style="cursor: pointer;">Liste aller Einträge: 0</div>
-
-        <div class="password-list" id="passwordListContainer">
-            
-            <div id="passwordList"></div>
-        </div>
-    </div>
-    <div class="separator"></div>
-
-
-    <!-- Config-Inhalt -->
-    <!--
-    <div class="content" id="configContent">
-        <h2>Exportieren und Importieren</h2>
-        <span class="export-icon" id="exportData" title="Daten exportieren">📤</span>
-        <span class="import-icon" id="importData" title="Daten importieren">📥</span>
-    </div>
-
-
-    -->
+    <div id="root"></div>
+    <script src="dist/popup.bundle.js"></script>
 </body>
 </html>

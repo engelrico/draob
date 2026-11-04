@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "MiroHero",
+  "version": "1.0.0",
+  "description": "Secure password manager for Miro boards with React UI and AES encryption.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.bundle.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/MH_icon.png"
+  },
+  "icons": {
+    "48": "icons/MH_icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.miro.com/app/board/*"],
+      "js": ["content.bundle.js"]
+    }
+  ],
+  "options_page": "options.html",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

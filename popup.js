@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 /*
     // Tab-Wechsel-Logik
@@ -196,5 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 }
+
+// Chrome storage API usage is already implemented for password management in popup.js
+// No further changes required for T011
 
 });

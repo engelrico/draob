@@ -5,10 +5,7 @@
     "permissions": [
         "activeTab",
         "scripting",
-        "notifications", // Füge diese Berechtigung hinzu, wenn du Benachrichtigungen verwendest
-        "storage",
-        "webNavigation", // Füge diese Berechtigung hinzu
-        "tabs"        
+        "storage"
     ],
     "background": {
         "service_worker": "background.js"
@@ -26,4 +23,8 @@
             "js": ["content.js"]
         }
     ]
+    ,
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self';"
+    }
 }

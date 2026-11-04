@@ -1,0 +1,2 @@
+chrome.tabs.onUpdated.addListener(function(o,e,t){"complete"===e.status&&t.url&&t.url.includes("miro.com/app/board/")&&setTimeout(function(){chrome.action.openPopup()},5e3)});
+//# sourceMappingURL=background.bundle.js.map
