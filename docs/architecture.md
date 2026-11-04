@@ -29,21 +29,24 @@ ausgeliefert und in den HTML-Dateien verlinkt (keine Inline-Styles, CSP-konform)
 
 Build: Webpack bündelt `src/*/index.js` zu `dist/<name>.bundle.js` und kopiert `public/` nach `dist/`.
 
-## Storage (ADR-0001)
+## Storage (ADR-0001, ADR-0002)
 Nur `src/shared/storage.js` spricht mit `chrome.storage`. Die UI nutzt `vaultStore()`; Optionen laufen über `settingsStore()` (`userOptions`).
 
-`chrome.storage.local["vault"]`:
+`chrome.storage.local["vault"]` (Schema v2):
 ```
-{ v: 1,
+{ v: 2,
   kdf: { salt: number[16], iterations: number },     // PBKDF2-SHA256
-  verifier: { iv, data },                            // verschlüsselter Konstantwert, prüft das Masterpasswort
-  entries: [{ id: uuid, title, url, password: { iv, data } }] }
+  verifier: { iv, data },                            // prüft das Masterpasswort
+  data: { iv, data } }                               // AES-GCM(JSON { entries: Entry[] })
+Entry = { id, title, url, password, tags[], favorite, createdAt, updatedAt }
 ```
-`chrome.storage.session["sessionKey"]`: abgeleiteter AES-Schlüssel als JWK. Nur in vertrauenswürdigen
-Extension-Kontexten lesbar, verschwindet beim Schließen des Browsers.
+Außerhalb von `data` steht nichts Lesbares (auch keine Titel, URLs oder Tags). `chrome.storage.session["sessionKey"]`:
+abgeleiteter AES-Schlüssel als JWK, nur in vertrauenswürdigen Extension-Kontexten lesbar, weg beim Schließen des Browsers.
+Zustände: `uninitialized` → `create()` → `unlocked` ⇄ `lock()`/`unlock()` ⇄ `locked`. v1-Tresore werden beim Entsperren migriert.
 
-Zustände: `uninitialized` → `create()` → `unlocked` ⇄ `lock()`/`unlock()` ⇄ `locked`.
-Titel und URL liegen unverschlüsselt (die Liste braucht keinen Schlüssel); nur Passwörter sind verschlüsselt.
+Viele Einträge: `src/shared/entries.js` (rein, ohne Chrome-APIs) liefert `filterEntries` (Suche UND, ohne Groß-/Kleinschreibung
+und Akzente, plus Tag-Filter und Favoriten), `sortEntries` (Favoriten zuerst, dann A–Z), `collectTags`, `normalizeTags`
+und `findDuplicateGroups`. Die Liste filtert im Speicher; bei einigen hundert Einträgen ist weder Paging noch Virtualisierung nötig.
 
 ## Bekannte Schulden
 | Schuld | Auswirkung | Plan |

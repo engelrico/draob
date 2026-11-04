@@ -1,7 +1,7 @@
 // Helpers for Miro board URLs and page titles.
 const BOARD_PATH = /^\/app\/board\/([^/]+)/;
 
-function boardIdOf(url) {
+export function boardIdOf(url) {
   try {
     const { hostname, pathname } = new URL(url);
     if (hostname !== 'miro.com' && !hostname.endsWith('.miro.com')) return null;

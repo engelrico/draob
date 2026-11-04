@@ -22,5 +22,10 @@ Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Proje
 | F-16 | Beim Öffnen auf einer Miro-Board-Seite werden URL (normalisiert, ohne Query) und Seitentitel (ohne "| Miro") übernommen | umgesetzt |
 | F-17 | Ist das Board anhand der Board-ID schon gespeichert, wird der Eintrag geladen ("Aktualisieren"), sonst als neuer Eintrag zum Speichern angeboten | umgesetzt |
 | F-18 | Bei bekanntem Board trägt der Button "In Miro einfügen" das Passwort ins Passwortfeld der Miro-Seite ein (füllt nur aus, sendet nie ab) | umgesetzt |
+| F-20 | Suche in Titel, URL und Tags (Mehrwort UND, ohne Groß-/Kleinschreibung und Akzente) | umgesetzt |
+| F-21 | Tags pro Eintrag, Filter-Chips mit Zähler (Mehrfachauswahl UND) | umgesetzt |
+| F-22 | Favoriten (Stern), stehen oben, Filter "nur Favoriten" | umgesetzt |
+| F-23 | Duplikate (gleiche Miro-Board-ID) beim Speichern verhindern, bestehende unter Config zusammenführen | umgesetzt |
+| F-24 | Alle Metadaten (Titel, URL, Tags) verschlüsselt speichern | umgesetzt, ADR-0002 |
 | F-14 | Passwörter speichern, auflisten, löschen | umgesetzt (verschlüsselt) |
 | F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | umgesetzt, ADR-0001 |

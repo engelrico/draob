@@ -7,15 +7,18 @@ const PATHS = {
   trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
   download: 'M12 3v12m0 0l-4-4m4 4l4-4M4 20h16',
   upload: 'M12 15V3m0 0L8 7m4-4l4 4M4 20h16',
+  star: 'M12 3l2.7 5.6 6.2.9-4.5 4.4 1 6.1L12 17l-5.4 3 1-6.1L3.1 9.5l6.2-.9z',
+  x: 'M6 6l12 12M18 6L6 18',
+  search: 'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3',
 };
 
-export default function Icon({ name, size = 18 }) {
+export default function Icon({ name, size = 18, filled = false }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"

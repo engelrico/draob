@@ -20,7 +20,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 | `src/background/` | Service Worker (setzt Badge auf Miro-Board-Tabs) |
 | `src/content/` | Content Script für `miro.com/app/board/*` |
 | `src/popup/`, `src/options/` | React-UIs (je `index.js` + `App.jsx`) |
-| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js`, `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
+| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js` (Tresor v2), `entries.js` (Suche/Tags/Duplikate, rein), `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
 | `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
 | `docs/` | Wissensbasis, siehe unten |
@@ -34,7 +34,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 2. Kein Inline-Script, kein `eval` (CSP in `public/manifest.json`). Webpack nutzt deshalb `devtool: 'source-map'`.
 3. Neue Permission oder Host-Permission nur mit Begründung in `docs/compliance.md`.
 4. Nur `src/shared/storage.js` greift auf `chrome.storage` zu. UI und andere Module nutzen `vaultStore()`.
-5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test.
+5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test. Neue Eintragsfelder gehören in den verschlüsselten Blob (ADR-0002), nie als Klartext neben `vault.data`; Schema-Änderungen brauchen eine Migration mit Test.
 6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
 
 ## Konventionen
@@ -50,7 +50,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 ## Wissensbasis (hier nachlesen, nicht raten)
 - `docs/architecture.md`: Komponenten, Datenfluss, Storage-Schema, bekannte Schulden
 - `docs/requirements.md`: Anforderungen mit IDs (F-xx)
-- `docs/decisions/`: Architekturentscheidungen (ADR), ADR-0001 = Masterpasswort/Schlüsselmodell
+- `docs/decisions/`: Architekturentscheidungen (ADR): 0001 Masterpasswort/Schlüsselmodell, 0002 verschlüsselter Tresor v2
 - `docs/compliance.md`: Chrome-Web-Store-Status, ehrlich mit offenen Punkten
 - `docs/manual-testing.md`: manueller Testablauf
 - `.specify/memory/constitution.md`: Projektprinzipien; `specs/<nr>-<name>/`: Spec, Plan, Tasks je Feature

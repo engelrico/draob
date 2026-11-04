@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { findEntryByUrl } from '../shared/miro';
-import { vaultStore } from '../shared/storage';
+import { DuplicateError, vaultStore } from '../shared/storage';
 import { fillPasswordInActiveTab, getActiveBoard } from '../shared/tabs';
 import AboutView from './AboutView';
 import ConfigView from './ConfigView';
@@ -10,7 +10,7 @@ import ListView from './ListView';
 import Tabs from './Tabs';
 import UnlockView from './UnlockView';
 
-const EMPTY_FORM = { id: null, title: '', url: '', password: '' };
+const EMPTY_FORM = { id: null, title: '', url: '', password: '', tags: [], favorite: false };
 
 export default function App() {
   const store = useMemo(() => vaultStore(), []);
@@ -19,6 +19,7 @@ export default function App() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [entries, setEntries] = useState([]);
   const [notice, setNotice] = useState(null);
+  const [duplicateId, setDuplicateId] = useState(null);
   const [unlockError, setUnlockError] = useState('');
   // undefined = still looking, null = active tab is no board
   const [board, setBoard] = useState(undefined);
@@ -55,6 +56,7 @@ export default function App() {
 
   const changeTab = (id) => {
     setNotice(null);
+    setDuplicateId(null);
     setTab(id);
   };
 
@@ -76,14 +78,23 @@ export default function App() {
   };
 
   const save = async () => {
-    const { id, title, url, password } = form;
+    const { id, title, url, password, tags, favorite } = form;
+    setDuplicateId(null);
     if (!title || !url || !password) {
       return setNotice({ kind: 'error', text: 'Bitte Titel, URL und Passwort ausfüllen.' });
     }
     const wasUpdate = Boolean(id);
     let savedId = id;
-    if (wasUpdate) await store.update(id, { title, url, password });
-    else savedId = await store.add({ title, url, password });
+    try {
+      if (wasUpdate) await store.update(id, { title, url, password, tags, favorite });
+      else savedId = await store.add({ title, url, password, tags, favorite });
+    } catch (err) {
+      if (err instanceof DuplicateError) {
+        setNotice(null);
+        return setDuplicateId(err.existingId);
+      }
+      throw err;
+    }
     const list = await refresh();
 
     if (board && findEntryByUrl(list, board.url)?.id === savedId) {
@@ -96,6 +107,27 @@ export default function App() {
       kind: 'success',
       text: wasUpdate ? 'Aktualisiert.' : 'Verschlüsselt gespeichert.',
     });
+  };
+
+  const useExisting = async () => {
+    const existingId = duplicateId;
+    const { title, url, password, tags, favorite } = form;
+    await store.update(existingId, { title, url, password, tags, favorite });
+    setDuplicateId(null);
+    setForm({ ...form, id: existingId });
+    setNotice({ kind: 'success', text: 'Bestehenden Eintrag aktualisiert.' });
+    refresh();
+  };
+
+  const toggleFavorite = async (id, favorite) => {
+    await store.setFavorite(id, favorite);
+    refresh();
+  };
+
+  const merge = async (keepId, removeIds) => {
+    await store.mergeDuplicates(keepId, removeIds);
+    if (removeIds.includes(form.id)) setForm(EMPTY_FORM);
+    refresh();
   };
 
   const FILL_NOTICES = {
@@ -143,12 +175,22 @@ export default function App() {
                 onSave={save}
                 onLock={lock}
                 onFill={fillInMiro}
+                onUseExisting={useExisting}
+                entries={entries}
+                duplicate={duplicateId !== null}
                 notice={notice}
                 boardState={boardState}
               />
             )}
-            {tab === 'list' && <ListView entries={entries} onPick={pick} onRemove={remove} />}
-            {tab === 'config' && <ConfigView />}
+            {tab === 'list' && (
+              <ListView
+                entries={entries}
+                onPick={pick}
+                onRemove={remove}
+                onToggleFavorite={toggleFavorite}
+              />
+            )}
+            {tab === 'config' && <ConfigView entries={entries} onMerge={merge} />}
             {tab === 'about' && <AboutView />}
           </div>
         </>

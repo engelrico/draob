@@ -20,6 +20,8 @@ und verfällt beim Schließen des Browsers. Zugriff auf Storage nur über `src/s
 Nutzer muss das Masterpasswort pro Browser-Session eingeben. Vergessenes Masterpasswort bedeutet
 Datenverlust. Migration der Bestandsdaten ist nicht nötig (sie sind nicht entschlüsselbar).
 
+> Hinweis: Das Speicherformat wurde durch ADR-0002 abgelöst (alle Metadaten verschlüsselt, Schema v2). Das Schlüsselmodell gilt unverändert.
+
 ## Umsetzung
 `src/shared/crypto.js` (`deriveKey`), `src/shared/storage.js` (`createVaultStore`), UI in `src/popup/App.jsx`.
 Tests: `tests/unit/crypto.test.js`, `tests/unit/storage.test.js`. Mindestlänge Masterpasswort: 8 Zeichen.
