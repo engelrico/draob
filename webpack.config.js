@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'production',
@@ -15,10 +16,16 @@ module.exports = {
     clean: true,
   },
   module: {
-    rules: [{ test: /\.jsx?$/, exclude: /node_modules/, use: 'babel-loader' }],
+    rules: [
+      { test: /\.jsx?$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+    ],
   },
   resolve: { extensions: ['.js', '.jsx'] },
   // No eval-based source maps: the extension CSP forbids eval.
   devtool: 'source-map',
-  plugins: [new CopyPlugin({ patterns: [{ from: 'public', to: '.' }] })],
+  plugins: [
+    new MiniCssExtractPlugin({ filename: '[name].css' }),
+    new CopyPlugin({ patterns: [{ from: 'public', to: '.' }] }),
+  ],
 };

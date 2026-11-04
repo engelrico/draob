@@ -1,7 +1,7 @@
 # MiroHero
 
 Chrome-Extension (Manifest V3) zum Speichern von Passwörtern für Miro-Boards.
-**Status:** früher Prototyp. Passwörter werden mit einem Masterpasswort verschlüsselt (siehe `docs/decisions/ADR-0001-key-management.md`); UI-Layout und Optionen fehlen noch.
+**Status:** früher Prototyp. Passwörter werden mit einem Masterpasswort verschlüsselt (siehe `docs/decisions/ADR-0001-key-management.md`); Export/Import und echte Optionen fehlen noch.
 
 ## Entwickeln
 ```bash

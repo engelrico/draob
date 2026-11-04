@@ -1,4 +1,9 @@
-import { LockedError, WrongPasswordError, createVaultStore } from '../../src/shared/storage';
+import {
+  LockedError,
+  WrongPasswordError,
+  createSettingsStore,
+  createVaultStore,
+} from '../../src/shared/storage';
 
 const memoryArea = () => {
   const data = {};
@@ -86,5 +91,15 @@ describe('vault store', () => {
     await store.create('master-password');
     expect(Object.keys(areas.local.data)).toEqual(['vault']);
     expect(Object.keys(areas.session.data)).toEqual(['sessionKey']);
+  });
+});
+
+describe('settings store', () => {
+  it('returns defaults and persists changes', async () => {
+    const area = memoryArea();
+    const settings = createSettingsStore(area);
+    expect(await settings.get()).toEqual({ theme: 'default', notifications: false });
+    await settings.set({ notifications: true });
+    expect(await settings.get()).toEqual({ theme: 'default', notifications: true });
   });
 });

@@ -1,6 +1,5 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
+import '../shared/theme.css';
 import OptionsApp from './App.jsx';
 
-const root = createRoot(document.getElementById('root'));
-root.render(<OptionsApp />);
+createRoot(document.getElementById('root')).render(<OptionsApp />);

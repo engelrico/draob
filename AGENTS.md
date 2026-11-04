@@ -20,7 +20,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 | `src/background/` | Service Worker (öffnet Popup auf Miro-Boards) |
 | `src/content/` | Content Script für `miro.com/app/board/*` |
 | `src/popup/`, `src/options/` | React-UIs (je `index.js` + `App.jsx`) |
-| `src/shared/` | Geteilter Code: `crypto.js`, `models/` |
+| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js`, `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
 | `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
 | `docs/` | Wissensbasis, siehe unten |
@@ -35,6 +35,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 3. Neue Permission oder Host-Permission nur mit Begründung in `docs/compliance.md`.
 4. Nur `src/shared/storage.js` greift auf `chrome.storage` zu. UI und andere Module nutzen `vaultStore()`.
 5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test.
+6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
 
 ## Konventionen
 - ES-Module überall, keine CommonJS-Datei in `src/`.
@@ -57,6 +58,6 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 ## Bekannte Lücken (nicht verschlimmern)
 - Kein Auto-Lock, kein Wechsel des Masterpassworts, keine Drosselung falscher Eingaben (ADR-0001).
 - Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt noch keinen Reset-Weg in der UI.
-- Die Optionsseite ist ein Platzhalter.
+- Die Optionsseite hat noch keine echte Wirkung; Export/Import sind nur deaktivierte Buttons.
 - Der Auto-Open des Popups per `openPopup` ist unzuverlässig (braucht meist eine Nutzergeste).
 - E2E-Tests fehlen noch (Playwright geplant).

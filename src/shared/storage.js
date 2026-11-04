@@ -1,4 +1,4 @@
-// The only module that touches chrome.storage (ADR-0001).
+// The only module that touches chrome.storage (ADR-0001): vault and settings.
 //
 // Layout in chrome.storage.local, key "vault":
 //   { v: 1, kdf: { salt: number[], iterations: number }, verifier: {iv,data}, entries: Entry[] }
@@ -132,3 +132,17 @@ export function createVaultStore(areas, { iterations = DEFAULT_ITERATIONS } = {}
 /** Production instance bound to the real chrome.storage areas. */
 export const vaultStore = () =>
   createVaultStore({ local: chrome.storage.local, session: chrome.storage.session });
+
+const SETTINGS = 'userOptions';
+const DEFAULT_SETTINGS = { theme: 'default', notifications: false };
+
+export function createSettingsStore(area) {
+  return {
+    async get() {
+      return { ...DEFAULT_SETTINGS, ...((await area.get(SETTINGS))[SETTINGS] || {}) };
+    },
+    set: (settings) => area.set({ [SETTINGS]: { ...DEFAULT_SETTINGS, ...settings } }),
+  };
+}
+
+export const settingsStore = () => createSettingsStore(chrome.storage.local);

@@ -1,46 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { settingsStore } from '../shared/storage';
+import Button from '../shared/ui/Button';
+import { Field, Notice } from '../shared/ui/Field';
 
-function OptionsApp() {
-  const [theme, setTheme] = useState('default');
-  const [notifications, setNotifications] = useState(false);
-  const [info, setInfo] = useState('');
+export default function OptionsApp() {
+  const store = useMemo(() => settingsStore(), []);
+  const [settings, setSettings] = useState({ theme: 'default', notifications: false });
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    chrome.storage.local.get('userOptions', (data) => {
-      const options = data.userOptions || {};
-      setTheme(options.theme || 'default');
-      setNotifications(options.notifications || false);
-    });
-  }, []);
+    store.get().then(setSettings);
+  }, [store]);
 
-  const saveOptions = () => {
-    chrome.storage.local.set({ userOptions: { theme, notifications } }, () => {
-      setInfo('Optionen gespeichert!');
-    });
+  const save = async (e) => {
+    e.preventDefault();
+    await store.set(settings);
+    setSaved(true);
+  };
+
+  const change = (patch) => {
+    setSaved(false);
+    setSettings({ ...settings, ...patch });
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2>MiroHero Optionen (React)</h2>
-      <label>
-        Theme:
-        <select value={theme} onChange={(e) => setTheme(e.target.value)}>
-          <option value="default">Default</option>
-          <option value="dark">Dark</option>
-        </select>
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={notifications}
-          onChange={(e) => setNotifications(e.target.checked)}
-        />
-        Benachrichtigungen aktivieren
-      </label>
-      <button onClick={saveOptions}>Speichern</button>
-      <div>{info}</div>
+    <div className="app app--page">
+      <header className="header">
+        <h1 className="header__title">MiroHero · Optionen</h1>
+      </header>
+      <form className="view" onSubmit={save}>
+        <div className="card form">
+          <Field label={<label htmlFor="theme">Theme</label>}>
+            <select
+              id="theme"
+              className="input"
+              value={settings.theme}
+              onChange={(e) => change({ theme: e.target.value })}
+            >
+              <option value="default">Standard</option>
+              <option value="dark">Dunkel</option>
+            </select>
+          </Field>
+          <span />
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={settings.notifications}
+              onChange={(e) => change({ notifications: e.target.checked })}
+            />
+            Benachrichtigungen aktivieren
+          </label>
+          <div className="form__actions">
+            <Button variant="primary" type="submit">
+              Speichern
+            </Button>
+          </div>
+        </div>
+        {saved && <Notice>Optionen gespeichert.</Notice>}
+      </form>
     </div>
   );
 }
-
-export default OptionsApp;
