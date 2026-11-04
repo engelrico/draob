@@ -19,9 +19,10 @@ export function normalizeBoardUrl(url) {
   return id ? `https://miro.com/app/board/${id}/` : null;
 }
 
-/** "Sprint Board | Miro" -> "Sprint Board". */
+/** "Sprint Board | Miro" -> "Sprint Board". A bare "Miro" (page still loading) gives "". */
 export function cleanBoardTitle(title = '') {
-  return title.replace(/\s*[|\-–—]\s*Miro\s*$/i, '').trim();
+  const cleaned = title.replace(/\s*[|\-–—]\s*Miro\s*$/i, '').trim();
+  return /^miro$/i.test(cleaned) ? '' : cleaned;
 }
 
 /** Finds a saved entry for the given board URL (compares board ids). */

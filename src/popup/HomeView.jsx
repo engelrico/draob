@@ -6,7 +6,7 @@ const BOARD_HINTS = {
   known: 'Dieses Board ist bereits gespeichert.',
 };
 
-export default function HomeView({ form, setForm, onSave, onLock, notice, boardState }) {
+export default function HomeView({ form, setForm, onSave, onLock, onFill, notice, boardState }) {
   const bind = (key) => ({
     value: form[key],
     onChange: (e) => setForm({ ...form, [key]: e.target.value }),
@@ -32,6 +32,11 @@ export default function HomeView({ form, setForm, onSave, onLock, notice, boardS
           </Button>
         </div>
       </div>
+      {boardState === 'known' && (
+        <Button type="button" block onClick={onFill} disabled={!form.password}>
+          In Miro einfügen
+        </Button>
+      )}
       {notice && <Notice kind={notice.kind}>{notice.text}</Notice>}
     </form>
   );

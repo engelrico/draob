@@ -15,6 +15,12 @@ Board-Erkennung: Beim Öffnen liest `src/shared/tabs.js` (`getActiveBoard`) URL 
 `https://miro.com/app/board/<id>/`, säubert den Titel und findet bestehende Einträge per Board-ID. `App.jsx`
 füllt das Formular einmal pro Öffnen vor und setzt `boardState` (`new` | `known`).
 
+Passwort einfügen: Der Button "In Miro einfügen" ruft `fillPasswordInActiveTab` (`src/shared/tabs.js`) auf. Das führt
+per `chrome.scripting.executeScript` die in sich geschlossene Funktion `fillPasswordField` (`src/shared/fillPassword.js`)
+im aktiven Tab aus: erstes sichtbares, aktivierbares `input[type=password]` im Hauptframe, Wert über den nativen
+Setter plus `input`/`change`-Events (damit React die Änderung übernimmt). Nur Miro-Board-Tabs, nur auf Klick, kein Absenden.
+Die Seite von Miro hat dafür ein reguläres Feld (`placeholder="Passwort"`, kein `<form>`), Stand 2026-11.
+
 UI-Komponenten (`src/popup/`): `App` (Status, aktiver Tab, Formularzustand) → `Header`, `Tabs`, `UnlockView`,
 `HomeView`, `ListView`, `ConfigView`, `AboutView`. Wiederverwendbare Bausteine in `src/shared/ui/`
 (`Button`, `Field`/`TextInput`/`PasswordInput`/`Notice`, `Icon`). Styles: `src/shared/theme.css`

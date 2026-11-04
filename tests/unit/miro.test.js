@@ -29,6 +29,7 @@ describe('miro helpers', () => {
     expect(cleanBoardTitle('Sprint Board | Miro')).toBe('Sprint Board');
     expect(cleanBoardTitle('Retro - Miro')).toBe('Retro');
     expect(cleanBoardTitle('Mirodrome')).toBe('Mirodrome');
+    expect(cleanBoardTitle('Miro')).toBe('');
     expect(cleanBoardTitle(undefined)).toBe('');
   });
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { findEntryByUrl } from '../shared/miro';
 import { vaultStore } from '../shared/storage';
-import { getActiveBoard } from '../shared/tabs';
+import { fillPasswordInActiveTab, getActiveBoard } from '../shared/tabs';
 import AboutView from './AboutView';
 import ConfigView from './ConfigView';
 import Header from './Header';
@@ -98,6 +98,16 @@ export default function App() {
     });
   };
 
+  const FILL_NOTICES = {
+    ok: { kind: 'success', text: 'Passwort in Miro eingefügt.' },
+    'no-field': { kind: 'error', text: 'Kein Passwortfeld auf der Miro-Seite gefunden.' },
+    'no-board': { kind: 'error', text: 'Der aktive Tab ist kein Miro-Board.' },
+    error: { kind: 'error', text: 'Einfügen nicht möglich. Seite neu laden und erneut versuchen.' },
+  };
+
+  const fillInMiro = async () =>
+    setNotice(FILL_NOTICES[await fillPasswordInActiveTab(form.password)]);
+
   const pick = async (id) => {
     setForm({ id, ...(await store.reveal(id)) });
     changeTab('home');
@@ -132,6 +142,7 @@ export default function App() {
                 setForm={setForm}
                 onSave={save}
                 onLock={lock}
+                onFill={fillInMiro}
                 notice={notice}
                 boardState={boardState}
               />
