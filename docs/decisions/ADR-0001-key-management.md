@@ -1,6 +1,6 @@
 # ADR-0001: Schlüsselverwaltung per Masterpasswort
 
-**Status:** vorgeschlagen · **Datum:** 2026-11-04
+**Status:** umgesetzt (2026-11-04) · **Datum:** 2026-11-04
 
 ## Kontext
 `App.jsx` erzeugt bei jedem Öffnen einen neuen AES-GCM-Schlüssel und speichert ihn nicht.
@@ -19,3 +19,9 @@ und verfällt beim Schließen des Browsers. Zugriff auf Storage nur über `src/s
 ## Folgen
 Nutzer muss das Masterpasswort pro Browser-Session eingeben. Vergessenes Masterpasswort bedeutet
 Datenverlust. Migration der Bestandsdaten ist nicht nötig (sie sind nicht entschlüsselbar).
+
+## Umsetzung
+`src/shared/crypto.js` (`deriveKey`), `src/shared/storage.js` (`createVaultStore`), UI in `src/popup/App.jsx`.
+Tests: `tests/unit/crypto.test.js`, `tests/unit/storage.test.js`. Mindestlänge Masterpasswort: 8 Zeichen.
+Nicht abgedeckt: Masterpasswort ändern, Tresor zurücksetzen, Brute-Force-Drosselung, Auto-Lock nach Timeout.
+Die Iterationszahl (600 000) ist pro Tresor gespeichert und kann später erhöht werden.

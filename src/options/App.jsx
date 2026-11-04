@@ -22,14 +22,19 @@ function OptionsApp() {
   return (
     <div style={{ padding: 16 }}>
       <h2>MiroHero Optionen (React)</h2>
-      <label>Theme:
-        <select value={theme} onChange={e => setTheme(e.target.value)}>
+      <label>
+        Theme:
+        <select value={theme} onChange={(e) => setTheme(e.target.value)}>
           <option value="default">Default</option>
           <option value="dark">Dark</option>
         </select>
       </label>
       <label>
-        <input type="checkbox" checked={notifications} onChange={e => setNotifications(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={notifications}
+          onChange={(e) => setNotifications(e.target.checked)}
+        />
         Benachrichtigungen aktivieren
       </label>
       <button onClick={saveOptions}>Speichern</button>

@@ -19,5 +19,5 @@ Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Proje
 | F-11 | Klick auf "Liste" zeigt die Listenansicht, "Home" wieder das Formular | offen |
 | F-12 | Listenansicht: nur Titel und Tab-Leiste bleiben; alle gespeicherten Titel aufgelistet | offen |
 | F-13 | Klick auf eine Listenzeile füllt das Formular mit den Werten | offen |
-| F-14 | Passwörter speichern, auflisten, löschen | teilweise (Speichern, Liste) |
-| F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | offen, siehe ADR-0001 |
+| F-14 | Passwörter speichern, auflisten, löschen | umgesetzt (verschlüsselt) |
+| F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | umgesetzt, ADR-0001 |

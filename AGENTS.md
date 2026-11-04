@@ -30,10 +30,10 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 
 ## Harte Regeln
-1. Passwörter dürfen nie im Klartext in `chrome.storage` oder im Code liegen. Verschlüsselung nur über `src/shared/crypto.js`.
+1. Passwörter dürfen nie im Klartext in `chrome.storage` oder im Code liegen. Verschlüsselung nur über `src/shared/crypto.js`, Schlüssel nur aus dem Masterpasswort (ADR-0001).
 2. Kein Inline-Script, kein `eval` (CSP in `public/manifest.json`). Webpack nutzt deshalb `devtool: 'source-map'`.
 3. Neue Permission oder Host-Permission nur mit Begründung in `docs/compliance.md`.
-4. UI-Code greift nicht direkt auf `chrome.storage` zu, sobald `src/shared/storage.js` existiert (siehe `docs/architecture.md`).
+4. Nur `src/shared/storage.js` greift auf `chrome.storage` zu. UI und andere Module nutzen `vaultStore()`.
 5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test.
 
 ## Konventionen
@@ -49,13 +49,14 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 ## Wissensbasis (hier nachlesen, nicht raten)
 - `docs/architecture.md`: Komponenten, Datenfluss, Storage-Schema, bekannte Schulden
 - `docs/requirements.md`: Anforderungen mit IDs (F-xx)
-- `docs/decisions/`: Architekturentscheidungen (ADR)
+- `docs/decisions/`: Architekturentscheidungen (ADR), ADR-0001 = Masterpasswort/Schlüsselmodell
 - `docs/compliance.md`: Chrome-Web-Store-Status, ehrlich mit offenen Punkten
 - `docs/manual-testing.md`: manueller Testablauf
 - `.specify/memory/constitution.md`: Projektprinzipien; `specs/<nr>-<name>/`: Spec, Plan, Tasks je Feature
 
 ## Bekannte Lücken (nicht verschlimmern)
-- Der Schlüssel in `src/popup/App.jsx` wird bei jedem Öffnen neu erzeugt: gespeicherte Passwörter sind
-  danach nicht entschlüsselbar. Lösung geplant: ADR-0001. Bis dahin keine Features darauf aufbauen.
+- Kein Auto-Lock, kein Wechsel des Masterpassworts, keine Drosselung falscher Eingaben (ADR-0001).
+- Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt noch keinen Reset-Weg in der UI.
+- Die Optionsseite ist ein Platzhalter.
 - Der Auto-Open des Popups per `openPopup` ist unzuverlässig (braucht meist eine Nutzergeste).
 - E2E-Tests fehlen noch (Playwright geplant).

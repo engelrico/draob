@@ -1,9 +1,14 @@
-import { webcrypto } from 'node:crypto';
-import { generateKey, encryptPassword, decryptPassword } from '../../src/shared/crypto';
+import {
+  decryptPassword,
+  deriveKey,
+  encryptPassword,
+  exportKey,
+  generateKey,
+  importKey,
+} from '../../src/shared/crypto';
 
-beforeAll(() => {
-  global.window = { crypto: webcrypto };
-});
+const SALT = Array(16).fill(7);
+const FAST = 1000; // iterations: low only for test speed
 
 describe('crypto', () => {
   it('round-trips a password with the same key', async () => {
@@ -23,5 +28,28 @@ describe('crypto', () => {
   it('fails to decrypt with a different key', async () => {
     const encrypted = await encryptPassword('geheim', await generateKey());
     await expect(decryptPassword(encrypted, await generateKey())).rejects.toBeDefined();
+  });
+
+  it('derives the same key from the same password and salt', async () => {
+    const encrypted = await encryptPassword('geheim', await deriveKey('master-pw', SALT, FAST));
+    const again = await deriveKey('master-pw', SALT, FAST);
+    expect(await decryptPassword(encrypted, again)).toBe('geheim');
+  });
+
+  it('derives a different key for a different password or salt', async () => {
+    const encrypted = await encryptPassword('geheim', await deriveKey('master-pw', SALT, FAST));
+    await expect(
+      decryptPassword(encrypted, await deriveKey('other-pw', SALT, FAST)),
+    ).rejects.toBeDefined();
+    await expect(
+      decryptPassword(encrypted, await deriveKey('master-pw', Array(16).fill(8), FAST)),
+    ).rejects.toBeDefined();
+  });
+
+  it('survives a JWK export/import round trip', async () => {
+    const key = await deriveKey('master-pw', SALT, FAST);
+    const restored = await importKey(await exportKey(key));
+    const encrypted = await encryptPassword('geheim', key);
+    expect(await decryptPassword(encrypted, restored)).toBe('geheim');
   });
 });

@@ -7,8 +7,8 @@ Stand 2026-11-04. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Manifest V3 | erfüllt | `public/manifest.json` |
 | Strikte CSP | erfüllt | `extension_pages: script-src 'self'; object-src 'self'` |
 | Minimale Permissions | zu prüfen | `activeTab`, `scripting`, `storage`; `scripting` wird aktuell nicht genutzt, entfernen oder begründen |
-| Passwörter verschlüsselt gespeichert | **offen** | Schlüssel nicht persistent, ADR-0001 |
-| Automatisierte Tests | teilweise | Unit-Tests für Krypto und Modelle, keine UI/E2E-Tests |
+| Passwörter verschlüsselt gespeichert | erfüllt | AES-GCM, Schlüssel aus Masterpasswort (PBKDF2), `tests/unit/storage.test.js` prüft, dass kein Klartext im Storage landet |
+| Automatisierte Tests | teilweise | Unit-Tests für Krypto, Storage und Modelle, keine UI/E2E-Tests |
 | Manuelle Tests | offen | `docs/manual-testing.md` noch nicht durchgeführt |
 | Security-Review | offen | |
 | Performance-Ziele (UI < 200 ms) | ungemessen | |
