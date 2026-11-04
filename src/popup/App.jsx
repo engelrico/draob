@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { findEntryByUrl } from '../shared/miro';
 import { vaultStore } from '../shared/storage';
+import { getActiveBoard } from '../shared/tabs';
 import AboutView from './AboutView';
 import ConfigView from './ConfigView';
 import Header from './Header';
@@ -8,7 +10,7 @@ import ListView from './ListView';
 import Tabs from './Tabs';
 import UnlockView from './UnlockView';
 
-const EMPTY_FORM = { title: '', url: '', password: '' };
+const EMPTY_FORM = { id: null, title: '', url: '', password: '' };
 
 export default function App() {
   const store = useMemo(() => vaultStore(), []);
@@ -18,16 +20,38 @@ export default function App() {
   const [entries, setEntries] = useState([]);
   const [notice, setNotice] = useState(null);
   const [unlockError, setUnlockError] = useState('');
+  // undefined = still looking, null = active tab is no board
+  const [board, setBoard] = useState(undefined);
+  const [boardState, setBoardState] = useState(null); // 'new' | 'known' | null
+  const boardHandled = useRef(false);
 
-  const refresh = useCallback(() => store.list().then(setEntries), [store]);
-
-  useEffect(() => {
-    store.status().then(setStatus);
+  const refresh = useCallback(async () => {
+    const list = await store.list();
+    setEntries(list);
+    return list;
   }, [store]);
 
   useEffect(() => {
-    if (status === 'unlocked') refresh();
-  }, [status, refresh]);
+    store.status().then(setStatus);
+    getActiveBoard().then(setBoard);
+  }, [store]);
+
+  // Once unlocked: load the list and prefill the form from the active Miro board (once per open).
+  useEffect(() => {
+    if (status !== 'unlocked' || board === undefined) return;
+    refresh().then(async (list) => {
+      if (boardHandled.current || !board) return;
+      boardHandled.current = true;
+      const known = findEntryByUrl(list, board.url);
+      if (known) {
+        setForm({ id: known.id, ...(await store.reveal(known.id)) });
+        setBoardState('known');
+      } else {
+        setForm({ ...EMPTY_FORM, title: board.title, url: board.url });
+        setBoardState('new');
+      }
+    });
+  }, [status, board, refresh, store]);
 
   const changeTab = (id) => {
     setNotice(null);
@@ -52,23 +76,38 @@ export default function App() {
   };
 
   const save = async () => {
-    if (!form.title || !form.url || !form.password) {
+    const { id, title, url, password } = form;
+    if (!title || !url || !password) {
       return setNotice({ kind: 'error', text: 'Bitte Titel, URL und Passwort ausfüllen.' });
     }
-    await store.add(form);
-    setForm(EMPTY_FORM);
-    setNotice({ kind: 'success', text: 'Verschlüsselt gespeichert.' });
-    refresh();
+    const wasUpdate = Boolean(id);
+    let savedId = id;
+    if (wasUpdate) await store.update(id, { title, url, password });
+    else savedId = await store.add({ title, url, password });
+    const list = await refresh();
+
+    if (board && findEntryByUrl(list, board.url)?.id === savedId) {
+      setForm({ ...form, id: savedId }); // stay on the board's entry
+      setBoardState('known');
+    } else {
+      setForm(EMPTY_FORM);
+    }
+    setNotice({
+      kind: 'success',
+      text: wasUpdate ? 'Aktualisiert.' : 'Verschlüsselt gespeichert.',
+    });
   };
 
   const pick = async (id) => {
-    setForm(await store.reveal(id));
+    setForm({ id, ...(await store.reveal(id)) });
     changeTab('home');
   };
 
   const remove = async (id) => {
     await store.remove(id);
-    refresh();
+    if (form.id === id) setForm(EMPTY_FORM);
+    const list = await refresh();
+    if (board && !findEntryByUrl(list, board.url)) setBoardState('new');
   };
 
   return (
@@ -88,7 +127,14 @@ export default function App() {
             style={{ display: 'contents' }}
           >
             {tab === 'home' && (
-              <HomeView form={form} setForm={setForm} onSave={save} onLock={lock} notice={notice} />
+              <HomeView
+                form={form}
+                setForm={setForm}
+                onSave={save}
+                onLock={lock}
+                notice={notice}
+                boardState={boardState}
+              />
             )}
             {tab === 'list' && <ListView entries={entries} onPick={pick} onRemove={remove} />}
             {tab === 'config' && <ConfigView />}

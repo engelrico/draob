@@ -103,3 +103,26 @@ describe('settings store', () => {
     expect(await settings.get()).toEqual({ theme: 'default', notifications: true });
   });
 });
+
+describe('vault update', () => {
+  it('replaces an entry in place and re-encrypts the password', async () => {
+    const { store, areas } = setup();
+    await store.create('master-password');
+    const id = await store.add({ title: 'Alt', url: 'u', password: 'altes-pw' });
+    await store.update(id, { title: 'Neu', url: 'u2', password: 'neues-pw' });
+    expect(await store.list()).toEqual([{ id, title: 'Neu', url: 'u2' }]);
+    expect((await store.reveal(id)).password).toBe('neues-pw');
+    expect(JSON.stringify(areas.local.data)).not.toContain('neues-pw');
+  });
+
+  it('rejects unknown ids and locked state', async () => {
+    const { store } = setup();
+    await store.create('master-password');
+    await expect(store.update('nope', { title: 't', url: 'u', password: 'p' })).rejects.toThrow();
+    const id = await store.add({ title: 't', url: 'u', password: 'p' });
+    await store.lock();
+    await expect(store.update(id, { title: 't', url: 'u', password: 'p' })).rejects.toBeInstanceOf(
+      LockedError,
+    );
+  });
+});

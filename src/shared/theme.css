@@ -365,6 +365,10 @@ p {
   background: var(--surface-2);
   animation: fade-in 0.18s ease-out;
 }
+.notice--info {
+  color: var(--gold);
+  border-color: rgba(255, 208, 47, 0.4);
+}
 .notice--error {
   color: var(--danger);
   border-color: rgba(255, 107, 107, 0.45);

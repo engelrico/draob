@@ -110,6 +110,18 @@ export function createVaultStore(areas, { iterations = DEFAULT_ITERATIONS } = {}
       return entry.id;
     },
 
+    async update(id, { title, url, password }) {
+      const key = await requireKey();
+      const vault = await readVault();
+      if (!vault.entries.some((e) => e.id === id)) throw new Error('Eintrag nicht gefunden');
+      const entries = await Promise.all(
+        vault.entries.map(async (e) =>
+          e.id === id ? { id, title, url, password: await encryptPassword(password, key) } : e,
+        ),
+      );
+      await writeVault({ ...vault, entries });
+    },
+
     async reveal(id) {
       const key = await requireKey();
       const entry = (await readVault()).entries.find((e) => e.id === id);

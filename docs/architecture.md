@@ -10,6 +10,11 @@ Popup (src/popup, React)  ─┐
 Options (src/options)      └─► src/shared/storage.js ─► crypto.js (PBKDF2, AES-GCM)
                                     └─► chrome.storage.local / .session
 ```
+Board-Erkennung: Beim Öffnen liest `src/shared/tabs.js` (`getActiveBoard`) URL und Titel des aktiven Tabs
+(erlaubt durch `activeTab`, keine `tabs`-Permission). `src/shared/miro.js` normalisiert die URL auf
+`https://miro.com/app/board/<id>/`, säubert den Titel und findet bestehende Einträge per Board-ID. `App.jsx`
+füllt das Formular einmal pro Öffnen vor und setzt `boardState` (`new` | `known`).
+
 UI-Komponenten (`src/popup/`): `App` (Status, aktiver Tab, Formularzustand) → `Header`, `Tabs`, `UnlockView`,
 `HomeView`, `ListView`, `ConfigView`, `AboutView`. Wiederverwendbare Bausteine in `src/shared/ui/`
 (`Button`, `Field`/`TextInput`/`PasswordInput`/`Notice`, `Icon`). Styles: `src/shared/theme.css`

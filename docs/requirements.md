@@ -19,5 +19,7 @@ Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Proje
 | F-11 | Klick auf "Liste" zeigt die Listenansicht, "Home" wieder das Formular | umgesetzt |
 | F-12 | Listenansicht: nur Titel und Tab-Leiste bleiben; alle gespeicherten Titel aufgelistet | umgesetzt |
 | F-13 | Klick auf eine Listenzeile füllt das Formular mit den Werten | umgesetzt |
+| F-16 | Beim Öffnen auf einer Miro-Board-Seite werden URL (normalisiert, ohne Query) und Seitentitel (ohne "| Miro") übernommen | umgesetzt |
+| F-17 | Ist das Board anhand der Board-ID schon gespeichert, wird der Eintrag geladen ("Aktualisieren"), sonst als neuer Eintrag zum Speichern angeboten | umgesetzt |
 | F-14 | Passwörter speichern, auflisten, löschen | umgesetzt (verschlüsselt) |
 | F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | umgesetzt, ADR-0001 |

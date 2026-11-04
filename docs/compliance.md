@@ -7,6 +7,7 @@ Stand 2026-11-04. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Manifest V3 | erfüllt | `public/manifest.json` |
 | Strikte CSP | erfüllt | `extension_pages: script-src 'self'; object-src 'self'` |
 | Auto-Hinweis auf Boards | umgesetzt, in Chrome noch zu prüfen | Content-Script meldet Board, Badge statt `openPopup` (braucht keine `tabs`-/Host-Permission) |
+| Zugriff auf Tab-URL/-Titel | umgesetzt, in Chrome noch zu prüfen | nur über `activeTab` beim Klick auf das Icon, nur Miro-Board-URLs werden verwendet |
 | Minimale Permissions | zu prüfen | `activeTab`, `scripting`, `storage`; `scripting` wird aktuell nicht genutzt, entfernen oder begründen |
 | Passwörter verschlüsselt gespeichert | erfüllt | AES-GCM, Schlüssel aus Masterpasswort (PBKDF2), `tests/unit/storage.test.js` prüft, dass kein Klartext im Storage landet |
 | Automatisierte Tests | teilweise | Unit-Tests für Krypto, Storage und Modelle, keine UI/E2E-Tests |

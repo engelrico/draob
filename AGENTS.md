@@ -20,7 +20,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 | `src/background/` | Service Worker (setzt Badge auf Miro-Board-Tabs) |
 | `src/content/` | Content Script für `miro.com/app/board/*` |
 | `src/popup/`, `src/options/` | React-UIs (je `index.js` + `App.jsx`) |
-| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js`, `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
+| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js`, `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
 | `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
 | `docs/` | Wissensbasis, siehe unten |
