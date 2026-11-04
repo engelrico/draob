@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { generateKey, encryptPassword, decryptPassword } from './crypto';
+import { generateKey, encryptPassword, decryptPassword } from '../shared/crypto';
 
 function App() {
   const [title, setTitle] = useState('');

@@ -1,8 +1,8 @@
 
 # Implementation Plan: [FEATURE]
 
-**Branch**: `001-f-hre-eine` | **Date**: 2025-09-28 | **Spec**: [/Users/rico/Documents/miroHero/specs/001-f-hre-eine/spec.md]
-**Input**: Feature specification from `/Users/rico/Documents/miroHero/specs/001-f-hre-eine/spec.md`
+**Branch**: `001-f-hre-eine` | **Date**: 2025-09-28 | **Spec**: [spec.md]
+**Input**: Feature specification from `spec.md`
 
 ## Execution Flow (/plan command scope)
 ```

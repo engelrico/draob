@@ -1,10 +1,12 @@
-const PasswordEntry = require('../../src/models/PasswordEntry');
+import PasswordEntry from '../../src/shared/models/PasswordEntry';
 
 describe('PasswordEntry', () => {
-  it('should create a password entry', () => {
+  it('stores title, url and password', () => {
     const entry = new PasswordEntry('Board1', 'https://miro.com/app/board/123', 'secret');
-    expect(entry.title).toBe('Board1');
-    expect(entry.url).toBe('https://miro.com/app/board/123');
-    expect(entry.password).toBe('secret');
+    expect(entry).toMatchObject({
+      title: 'Board1',
+      url: 'https://miro.com/app/board/123',
+      password: 'secret',
+    });
   });
 });

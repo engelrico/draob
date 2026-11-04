@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "MiroHero",
+  "version": "0.1.0",
+  "description": "Passwörter für Miro-Boards sicher verwalten.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "background": { "service_worker": "background.bundle.js" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/MH_icon.png"
+  },
+  "options_page": "options.html",
+  "icons": { "48": "icons/MH_icon.png" },
+  "content_scripts": [
+    {
+      "matches": ["*://*.miro.com/app/board/*"],
+      "js": ["content.bundle.js"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

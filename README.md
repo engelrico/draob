@@ -1,26 +1,18 @@
-# MiroHero Chrome Extension
+# MiroHero
 
-Secure password management for Miro boards.
+Chrome-Extension (Manifest V3) zum Speichern von Passwörtern für Miro-Boards.
+**Status:** früher Prototyp. Die Verschlüsselung ist noch nicht alltagstauglich (siehe `docs/architecture.md`).
 
-## Features
-- Save, list, and delete passwords for Miro boards
-- Options/configuration UI
-- Chrome storage API for sensitive data
-- Strict CSP and minimal permissions
-- Automated and manual tests
-- Chrome Web Store compliance
+## Entwickeln
+```bash
+npm ci
+npm run build   # → dist/
+```
+In Chrome `chrome://extensions` → Entwicklermodus → "Entpackte Erweiterung laden" → Ordner `dist/`.
 
-## Setup
-1. Install dependencies: `npm install`
-2. Build: `npm run build`
-3. Load unpacked extension from `dist/` in Chrome
+Weitere Befehle: `npm test`, `npm run lint`, `npm run format`.
 
-## Testing
-- Unit: `npm test`
-- E2E: `npx playwright test`
-
-## Manual Testing
-See `docs/manual-testing.md`
-
-## Compliance
-See `docs/compliance.md`
+## Dokumentation
+Einstieg für Menschen und Agenten: [AGENTS.md](AGENTS.md).
+Details: [Architektur](docs/architecture.md) · [Anforderungen](docs/requirements.md) ·
+[Entscheidungen](docs/decisions/) · [Compliance](docs/compliance.md) · [Manuelle Tests](docs/manual-testing.md)

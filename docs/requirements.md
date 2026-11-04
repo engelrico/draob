@@ -1,0 +1,23 @@
+# Anforderungen
+
+Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Projektinhabers.
+
+## UI-Layout
+| ID | Anforderung | Status |
+|---|---|---|
+| F-01 | Titel, URL, Passwort sind Beschriftungen links, die Eingabefelder rechts daneben | offen |
+| F-02 | Alle Eingabefelder gleich lang, linksbündig untereinander | offen |
+| F-03 | Versionsnummer klein rechts oben neben dem Titel | offen |
+| F-04 | Kopfzeile zeigt immer Logo, Titel, Version, darunter eine gelbe Linie | offen |
+| F-05 | Obere Leiste mit Home, Liste, Config, About; verhält sich wie Tabs | offen |
+| F-06 | Export und Import erscheinen unter Config | offen |
+
+## Verhalten
+| ID | Anforderung | Status |
+|---|---|---|
+| F-10 | Plugin öffnet sich automatisch bei URL mit `miro.com/app/board/` | teilweise (unzuverlässig) |
+| F-11 | Klick auf "Liste" zeigt die Listenansicht, "Home" wieder das Formular | offen |
+| F-12 | Listenansicht: nur Titel und Tab-Leiste bleiben; alle gespeicherten Titel aufgelistet | offen |
+| F-13 | Klick auf eine Listenzeile füllt das Formular mit den Werten | offen |
+| F-14 | Passwörter speichern, auflisten, löschen | teilweise (Speichern, Liste) |
+| F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | offen, siehe ADR-0001 |

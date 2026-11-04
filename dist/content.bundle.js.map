@@ -1,1 +1,0 @@
-{"version":3,"file":"content.bundle.js","mappings":"AAAAA,OAAOC,QAAQC,YAAY,CAAEC,OAAQ","sources":["webpack://mirohero-extension/./content.js"],"sourcesContent":["chrome.runtime.sendMessage({ action: \"openPopup\" });\n"],"names":["chrome","runtime","sendMessage","action"],"sourceRoot":""}
