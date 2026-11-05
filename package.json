@@ -15,8 +15,8 @@
     "version": "node scripts/sync-manifest-version.js && git add public/manifest.json"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.22.0",
