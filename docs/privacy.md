@@ -1,8 +1,8 @@
 # Datenschutzerklärung für draob
 
 Stand: 2026-11-05 · Diese Datei ist der Text für die öffentliche Datenschutzseite. Vor der Veröffentlichung die Platzhalter in
-`[eckigen Klammern]` ausfüllen und die Seite unter einer **öffentlichen URL** bereitstellen (die Startseite eines privaten Repos
-genügt nicht).
+`[eckigen Klammern]` ausfüllen und die Seite unter einer **öffentlichen URL** bereitstellen (z. B. GitHub Pages aus dem Ordner `docs/`; die Startseite des Repos
+genügt laut einer Drittquelle nicht als Datenschutzerklärung).
 
 ## Kurzfassung
 draob verarbeitet deine Daten **ausschließlich lokal in deinem Browser**. Es gibt keinen Server, keine Konten, keine Analyse- oder

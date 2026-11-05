@@ -36,7 +36,7 @@ Actions → **Release** → **Run workflow**. Das baut und lädt nur die ZIP als
 - Falschen Tag entfernen: `git push --delete origin vX.Y.Z` und `git tag -d vX.Y.Z`; das Release auf der GitHub-Seite getrennt löschen.
 
 ## Hinweise
-- **Sichtbarkeit:** Solange das Repo privat ist, sehen nur du und Eingeladene die Release-Seite. Für alle sichtbar wird sie, sobald das Repo öffentlich ist.
+- **Sichtbarkeit:** Das Repo ist öffentlich, die Release-Seite ist damit für alle erreichbar (auch ohne GitHub-Konto). Alles, was im Repo oder in einem Release liegt, ist öffentlich: keine Zugangsdaten, keine privaten Daten committen.
 - **Version für Chrome:** 1 bis 4 Zahlenblöcke, keine Zusätze wie `-beta`. Jeder Store-Upload braucht eine höhere Version als der vorherige.
 - **Installation aus der ZIP:** entpacken → `chrome://extensions` → Entwicklermodus → „Entpackte Erweiterung laden“. Chrome installiert Erweiterungen außerhalb des
   Stores nicht per Doppelklick.

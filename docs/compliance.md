@@ -7,7 +7,7 @@ Stand 2026-11-05. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Manifest V3 | erfüllt | `public/manifest.json` |
 | Strikte CSP | erfüllt | `extension_pages: script-src 'self'; object-src 'self'` |
 | Nicht funktionierende Teile | behoben | Optionsseite ist jetzt die Verwaltung (Sicherung, Wiederherstellen, Reset); keine Platzhalter-Einstellungen mehr |
-| Datenschutzerklärung | Text fertig, URL offen | `docs/privacy.md`; muss öffentlich gehostet werden (Repo ist privat) und Platzhalter für Name, Anschrift, E-Mail brauchen Eingabe |
+| Datenschutzerklärung | Text fertig, URL offen | `docs/privacy.md`; muss unter einer öffentlichen URL gehostet werden (das Repo ist öffentlich, GitHub Pages ist damit möglich, z. B. aus dem Ordner `docs/`); Platzhalter für Name, Anschrift, E-Mail brauchen Eingabe |
 | Listing-Texte, Permission-Begründungen | fertig als Entwurf | `docs/store-listing.md` |
 | Store-Grafiken | siehe `docs/store/` | Screenshots 1280×800, kleine Kachel 440×280, optional Marquee |
 | Reset bei vergessenem Passwort, Sicherung | umgesetzt | Popup (Entsperren, Config) und Verwaltungsseite, getestet |

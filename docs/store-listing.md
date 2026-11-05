@@ -9,7 +9,7 @@ nur Deutsch). Sichtbarkeit beim ersten Upload: **Nicht gelistet (Unlisted)**, na
   `Board-Passwörter verschlüsselt speichern, durchsuchen und mit einem Klick auf Miro-Boards einfügen. Alles lokal, ohne Konto.` (124 Zeichen)
 - **Kategorie:** Produktivität
 - **Sprache:** Deutsch
-- **Webseite / Support:** [GitHub-Repo oder eigene Seite, nur wenn öffentlich] · **Support-E-Mail:** [E-Mail]
+- **Webseite / Support:** [Repo-URL `https://github.com/engelrico/draob` oder eigene Seite] · **Support-E-Mail:** [E-Mail]
 - **Datenschutzerklärung (URL):** [öffentliche URL der Seite aus `docs/privacy.md`]
 
 ## Detaillierte Beschreibung
