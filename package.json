@@ -7,7 +7,8 @@
     "build": "webpack --config webpack.config.js",
     "lint": "eslint --ext .js,.jsx src tests",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\" \"tests/**/*.js\"",
-    "test": "jest"
+    "test": "jest",
+    "version": "node scripts/sync-manifest-version.js && git add public/manifest.json"
   },
   "dependencies": {
     "react": "^18.2.0",

@@ -67,7 +67,13 @@ aufgeräumte Schaltzentrale direkt im Browser.
 
 Der Tresor sperrt sich, wenn du Chrome schließt, oder wenn du auf **Sperren** klickst.
 
-## Installation
+## Download
+
+Fertige Version: **[Releases → neueste Version](https://github.com/engelrico/draob/releases/latest)**. Dort `draob-<Version>.zip` herunterladen,
+entpacken und wie unten beschrieben in Chrome laden (Schritte 2 bis 4). Node.js und ein Build sind dafür nicht nötig.
+Die Release-Seite ist für Dritte erst erreichbar, wenn das Repo öffentlich ist.
+
+## Aus dem Quellcode bauen
 
 draob ist noch nicht im Chrome Web Store. Bis dahin installierst du es aus dem Quellcode (Node.js 20+):
 

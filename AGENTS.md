@@ -22,6 +22,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 | `src/popup/` | React-Popup (`index.js` + `App.jsx` + Views) |
 | `src/options/` | Verwaltungsseite (Sicherung, Wiederherstellen, Zurücksetzen) |
 | `src/shared/` | Geteilter Code: `crypto.js`, `storage.js` (Tresor v2), `entries.js` (Suche/Tags/Duplikate, rein), `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `download.js`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
+| `scripts/` | Hilfsskripte, z. B. `sync-manifest-version.js` (läuft bei `npm version`) |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
 | `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
 | `docs/` | Wissensbasis, siehe unten |
@@ -39,6 +40,10 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
 7. Der Spendenhinweis (`src/shared/support.js`) erscheint nur im About-Tab und in der README, nie als Popup, Overlay oder Aufforderung beim Start.
 
+## Releases
+Version nie von Hand ändern: `npm version <patch|minor|major>` gleicht `package.json` und `public/manifest.json` an, committet und taggt. Ein Tag-Push `vX.Y.Z`
+startet den Workflow `Release`, der die ZIP als GitHub-Release anlegt. Ablauf und Fallstricke: `docs/releasing.md`.
+
 ## Konventionen
 - ES-Module überall, keine CommonJS-Datei in `src/`.
 - Code und Kommentare Englisch, UI-Texte Deutsch.
@@ -53,6 +58,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 - `docs/architecture.md`: Komponenten, Datenfluss, Storage-Schema, bekannte Schulden
 - `docs/requirements.md`: Anforderungen mit IDs (F-xx)
 - `docs/decisions/`: Architekturentscheidungen (ADR): 0001 Masterpasswort/Schlüsselmodell, 0002 verschlüsselter Tresor v2
+- `docs/releasing.md`: Release-Ablauf (npm version, Tag, Workflow)
 - `docs/compliance.md`: Chrome-Web-Store-Status, ehrlich mit offenen Punkten
 - `docs/manual-testing.md`: manueller Testablauf
 - `.specify/memory/constitution.md`: Projektprinzipien; `specs/<nr>-<name>/`: Spec, Plan, Tasks je Feature

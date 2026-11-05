@@ -1,0 +1,93 @@
+name: Release
+
+# Builds draob.zip and publishes it as a GitHub Release.
+#  - Push a tag like v0.2.0 (e.g. via `npm version minor`) -> test, build, ZIP, create/update the Release.
+#  - Run manually from the Actions tab -> same build, but only uploads the ZIP as a workflow artifact (no Release).
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+      - name: Read and check versions
+        id: version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          pkg=$(node -p "require('./package.json').version")
+          manifest=$(node -p "require('./dist/manifest.json').version")
+          if [ "$pkg" != "$manifest" ]; then
+            echo "::error::package.json ($pkg) and manifest.json ($manifest) differ. Use 'npm version' to bump both."
+            exit 1
+          fi
+          if [ "$REF_TYPE" = "tag" ] && [ "$REF_NAME" != "v$pkg" ]; then
+            echo "::error::Tag $REF_NAME does not match package version v$pkg."
+            exit 1
+          fi
+          echo "version=$pkg" >> "$GITHUB_OUTPUT"
+
+      - name: Package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          zip_name="draob-$VERSION.zip"
+          (cd dist && zip -r "../$zip_name" . -x '*.map')
+          sha256sum "$zip_name" > "$zip_name.sha256"
+          echo "Contents of $zip_name:"
+          unzip -l "$zip_name"
+          cat "$zip_name.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: draob-${{ steps.version.outputs.version }}
+          path: |
+            draob-${{ steps.version.outputs.version }}.zip
+            draob-${{ steps.version.outputs.version }}.zip.sha256
+
+      - name: Create or update GitHub Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          zip_name="draob-$VERSION.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$zip_name" "$zip_name.sha256" --clobber
+          else
+            cat > notes.md <<NOTES
+          ## draob $VERSION
+
+          Passwörter für Miro-Boards, verschlüsselt und lokal gespeichert.
+
+          ### Installation
+          1. \`$zip_name\` herunterladen und **entpacken**.
+          2. In Chrome \`chrome://extensions\` öffnen und den **Entwicklermodus** einschalten.
+          3. **Entpackte Erweiterung laden** wählen und den entpackten Ordner auswählen.
+          4. Das Icon über das Puzzle-Symbol an die Leiste anheften.
+
+          Die SHA-256-Prüfsumme steht in \`$zip_name.sha256\`.
+
+          Noch nicht im Chrome Web Store. draob ist ein unabhängiges Projekt und nicht mit Miro verbunden.
+          NOTES
+            flags=""
+            if [ "${VERSION%%.*}" = "0" ]; then flags="--prerelease"; fi
+            gh release create "$TAG" "$zip_name" "$zip_name.sha256" --title "draob $VERSION" --notes-file notes.md $flags
+          fi

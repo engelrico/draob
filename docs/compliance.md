@@ -24,4 +24,4 @@ Stand 2026-11-05. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Performance-Ziele (UI < 200 ms) | ungemessen | |
 | Entwicklerkonto, Trader-Angaben, Namensprüfung | offen (Nutzer) | |
 
-Deploy: `Package extension` (GitHub Action, manuell) erzeugt `draob.zip`; Upload in den Store erfolgt von Hand.
+Release: Tag `vX.Y.Z` startet den Workflow `Release` und legt `draob-<Version>.zip` als GitHub-Release an (`docs/releasing.md`). `Package extension` (manuell) baut nur ein Artefakt. Upload in den Store erfolgt von Hand.
