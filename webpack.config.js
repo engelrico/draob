@@ -22,6 +22,8 @@ module.exports = {
     ],
   },
   resolve: { extensions: ['.js', '.jsx'] },
+  // The bundles ship inside the extension and load from disk, not over the network: warn only at real growth.
+  performance: { maxEntrypointSize: 400 * 1024, maxAssetSize: 400 * 1024 },
   // No eval-based source maps: the extension CSP forbids eval.
   devtool: 'source-map',
   plugins: [

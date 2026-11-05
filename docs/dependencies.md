@@ -1,17 +1,15 @@
 # Abhängigkeiten und wie sie aktuell bleiben
 
-Stand 2026-11-05. Geprüft mit `npm ls`, `npm audit` und `npm run licenses`.
+Stand 2026-11-05 (nach dem Update auf React 19). Geprüft mit `npm ls`, `npm audit` und `npm run licenses`.
 
 ## Was an Nutzer ausgeliefert wird
-Nur React und seine Hilfsmodule. Alles ist in `popup.bundle.js` und `options.bundle.js` eingebaut (kein CDN, kein Nachladen, kein Remote-Code).
+Nur React und sein Hilfsmodul `scheduler` (mit React 19 sind `loose-envify` und `js-tokens` entfallen). Alles ist in `popup.bundle.js` und `options.bundle.js` eingebaut (kein CDN, kein Nachladen, kein Remote-Code).
 
 | Paket | Version | Lizenz | Zweck |
 |---|---|---|---|
-| `react` | 18.3.1 | MIT | Oberfläche |
-| `react-dom` | 18.3.1 | MIT | Rendern im Popup und auf der Verwaltungsseite |
-| `scheduler` | 0.23.2 | MIT | Hilfsmodul von `react-dom` |
-| `loose-envify` | 1.4.0 | MIT | Hilfsmodul von React |
-| `js-tokens` | 4.0.0 | MIT | Hilfsmodul von `loose-envify` |
+| `react` | 19.3.1 | MIT | Oberfläche |
+| `react-dom` | 19.3.1 | MIT | Rendern im Popup und auf der Verwaltungsseite |
+| `scheduler` | 0.28.0 | MIT | Hilfsmodul von `react-dom` |
 
 Die Lizenztexte stehen als `*.bundle.js.LICENSE.txt` im Build und damit auch in der ZIP. `npm run licenses` prüft, dass jedes ausgelieferte Paket
 eine erlaubte Lizenz hat (MIT, ISC, BSD-2-Clause, BSD-3-Clause, Apache-2.0, 0BSD; bei SPDX-Ausdrücken zählt „A OR B“ erlaubt, wenn eine Seite erlaubt ist, und „A AND B“ nur, wenn beide erlaubt sind).
@@ -27,6 +25,7 @@ nicht die Nutzer der Erweiterung.
 | **CI** | `.github/workflows/ci.yml` | Prüft jeden Vorschlag: `npm audit --omit=dev --audit-level=high`, Lizenzen, Lint, Tests, Build. |
 | **Wöchentlicher Audit** | `.github/workflows/audit.yml` | Montags früh (und manuell): ausgelieferte Pakete müssen frei von bekannten Schwachstellen sein, Lizenzen erlaubt; Tooling-Audit und `npm outdated` als Zusammenfassung. Ein fehlgeschlagener geplanter Lauf wird per E-Mail gemeldet. |
 | **Release** | `.github/workflows/release.yml` | Auditiert und prüft Lizenzen vor jedem Release. |
+| **Hauptversionen-Sperre** | `.github/dependabot.yml` (`ignore`) | Hauptversionen von `@babel/*`, `eslint` und `eslint-plugin-react-hooks` werden nicht vorgeschlagen, bis die gemeinsame Migration geplant ist (siehe Backlog). |
 | **Node-Version** | `.nvmrc` | Eine Stelle für CI, Release und Entwickler (`engines`: `>=22`). |
 
 ### Ablauf bei einem Dependabot-PR
@@ -45,17 +44,20 @@ Diese Updates brauchen Umbauarbeit und werden einzeln mit Tests eingespielt. Emp
 
 | Paket | Aktuell | Neu | Hinweise |
 |---|---|---|---|
-| `react`, `react-dom` | 18.3.1 | 19.x | Kleine App, `createRoot` wird schon genutzt; `eslint-plugin-react` und Tests prüfen. Betrifft ausgelieferten Code, danach Release. |
-| `jest`, `babel-jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren. Entfernt die verbleibenden Tooling-Meldungen der Jest-Kette. |
-| `copy-webpack-plugin` | 12.0.2 | 14.x | Behebt die offene „hoch“-Meldung zu `serialize-javascript` (nur Build-Zeit). |
+| `jest`, `babel-jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren. Soll die verbleibenden Tooling-Meldungen der Jest-Kette beheben (vor dem Update prüfen). |
 | `webpack-cli`, `babel-loader` | 5.1.4, 9.2.1 | 7.x, 10.x | Zusammen mit Webpack prüfen. |
-| `@babel/*` | 7.29.x | 8.x | Konfiguration (`babel.config.json`) prüfen. |
-| `eslint`, `eslint-plugin-react-hooks` | 8.57.1, 4.6.2 | 10.x, 7.x | ESLint 9 und neuer brauchen das Flat-Config-Format: `.eslintrc.json` muss migriert werden. |
+| `@babel/*` | 7.29.x | 8.x | `@babel/core`, `preset-env` und `preset-react` nur zusammen (ein einzelnes Update scheitert am Peer-Konflikt). Konfiguration (`babel.config.json`) prüfen. |
+| `eslint`, `eslint-plugin-react-hooks` | 8.57.1, 4.6.2 | 10.x, 7.x | ESLint 9 und neuer brauchen das Flat-Config-Format: `.eslintrc.json` muss migriert werden. `eslint-plugin-react-hooks` 7 meldet außerdem `src/popup/App.jsx` (setState synchron im Effekt, `react-hooks/set-state-in-effect`): vor dem Update den Effekt umbauen. |
 
 ## Bekannter Stand der Sicherheitsmeldungen (Tooling)
-Nach dem Update innerhalb der Versionsbereiche meldet `npm audit` noch 8 Treffer (6 niedrig, 1 mittel, 1 hoch), **alle in Bauwerkzeugen**: `serialize-javascript` und
-`copy-webpack-plugin` (behoben mit `copy-webpack-plugin` 14) sowie die Jest-Kette (behoben mit Jest 30). Für die ausgelieferten Pakete gibt es **keine** Meldungen
-(`npm audit --omit=dev`).
+Nach den Updates auf `copy-webpack-plugin` 14 und React 19 meldet `npm audit` noch **6 niedrige Treffer**, alle in der Jest-Kette (`jest`, `@jest/core`, `jest-cli`,
+`jest-config`, `create-jest`, `deepmerge`). Sie sollten mit Jest 30 verschwinden (noch nicht geprüft, siehe Backlog). Für die ausgelieferten Pakete gibt es **keine** Meldungen (`npm audit --omit=dev`).
+
+## Eingespielte Updates
+- 2026-11-05: React 18.3.1 → 19.3.1 (`react`, `react-dom`, `scheduler` 0.28.0), `copy-webpack-plugin` 12 → 14, GitHub Actions `checkout`, `setup-node`, `upload-artifact` auf v7.
+  Geprüft: ausgelieferte Dateien bei `copy-webpack-plugin` 14 identisch; React 19 gegenüber 18 in 7 UI-Szenen pixelgleich bzw. gleicher DOM (nur Attributreihenfolge und `useId`-Format
+  `:r0:` → `_r_0_` unterscheiden sich); Export, Import, Reset, Entsperren, Suche, Tags und Favoriten unter React 19 durchgespielt. Das Popup-Bundle ist durch React 19 von etwa 160 auf 237 KB gewachsen
+  (`webpack.config.js`: Warnschwelle auf 400 KB, weil die Dateien lokal geladen werden).
 
 ## Nützliche Befehle
 ```bash

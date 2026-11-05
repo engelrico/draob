@@ -13,6 +13,16 @@ updates:
     labels: [dependencies]
     commit-message:
       prefix: 'chore(deps)'
+    # Major versions that must be migrated together, not one by one (see "Offene Hauptversionen" in docs/dependencies.md):
+    #  - Babel 8 needs @babel/core, preset-env and preset-react at once
+    #  - ESLint 9+ needs the flat config format; eslint-plugin-react-hooks 7 flags code in src/popup/App.jsx
+    ignore:
+      - dependency-name: '@babel/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint-plugin-react-hooks'
+        update-types: ['version-update:semver-major']
     groups:
       # Build and test tooling: all minor and patch updates in one PR. Major versions arrive as single PRs.
       dev-tooling:
