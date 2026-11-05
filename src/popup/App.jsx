@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { findEntryByUrl } from '../shared/miro';
 import { DuplicateError, vaultStore } from '../shared/storage';
+import { backupFilename, downloadJson } from '../shared/download';
 import { fillPasswordInActiveTab, getActiveBoard } from '../shared/tabs';
 import AboutView from './AboutView';
 import ConfigView from './ConfigView';
@@ -119,6 +120,16 @@ export default function App() {
     refresh();
   };
 
+  const exportBackup = async () => downloadJson(await store.exportVault(), backupFilename());
+
+  const resetAll = async () => {
+    await store.reset();
+    setForm(EMPTY_FORM);
+    setEntries([]);
+    setUnlockError('');
+    setStatus('uninitialized');
+  };
+
   const toggleFavorite = async (id, favorite) => {
     await store.setFavorite(id, favorite);
     refresh();
@@ -157,7 +168,14 @@ export default function App() {
       <Header />
       {status === null && <div className="view muted">Lade …</div>}
       {(status === 'uninitialized' || status === 'locked') && (
-        <UnlockView key={status} mode={status} onSubmit={submitMaster} error={unlockError} />
+        <UnlockView
+          key={status}
+          mode={status}
+          onSubmit={submitMaster}
+          onReset={resetAll}
+          onExport={exportBackup}
+          error={unlockError}
+        />
       )}
       {status === 'unlocked' && (
         <>
@@ -190,7 +208,14 @@ export default function App() {
                 onToggleFavorite={toggleFavorite}
               />
             )}
-            {tab === 'config' && <ConfigView entries={entries} onMerge={merge} />}
+            {tab === 'config' && (
+              <ConfigView
+                entries={entries}
+                onMerge={merge}
+                onExport={exportBackup}
+                onManage={() => chrome.runtime.openOptionsPage()}
+              />
+            )}
             {tab === 'about' && <AboutView />}
           </div>
         </>

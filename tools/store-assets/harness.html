@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>demo</title><link rel="stylesheet" href="popup.css"></head><body><div id="root"></div>
+<script>
+const P = new URLSearchParams(location.search), scene = P.get('scene') || 'list';
+const w = (ms) => new Promise((r) => setTimeout(r, ms));
+const MASTER = 'demo-master-2027';
+const setVal = (el, v) => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(el, v); el.dispatchEvent(new Event('input', { bubbles: true })); };
+
+async function seed() {
+  const enc = new TextEncoder(), subtle = crypto.subtle, salt = Array(16).fill(5);
+  const mat = await subtle.importKey('raw', enc.encode(MASTER), 'PBKDF2', false, ['deriveKey']);
+  const key = await subtle.deriveKey({ name: 'PBKDF2', salt: new Uint8Array(salt), iterations: 1000, hash: 'SHA-256' }, mat, { name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+  const seal = async (t) => { const iv = crypto.getRandomValues(new Uint8Array(12)); const d = await subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(t)); return { iv: [...iv], data: [...new Uint8Array(d)] }; };
+  const rows = [
+    ['Roadmap 2027', ['Strategie','Kunde Nordwind'], 1], ['Sprint 42 Planung', ['Agil','Intern'], 1], ['Kundenworkshop Nordwind', ['Workshop','Kunde Nordwind'], 1],
+    ['Retro Q4', ['Agil','Intern'], 0], ['UX Research Synthese', ['UX','Workshop'], 0], ['Architektur-Review', ['Intern'], 0],
+    ['OKR Workshop', ['Strategie','Workshop'], 0], ['Design Sprint Woche 3', ['UX','Agil'], 0], ['Onboarding Journey', ['UX'], 0],
+    ['Marketing Kampagne Herbst', ['Kunde Nordwind'], 0], ['Release Planung 5.2', ['Agil'], 0], ['Stakeholder Map', ['Strategie'], 0],
+    ['Hackathon Ideen', ['Workshop','Intern'], 0], ['Quartalsreview', ['Strategie','Intern'], 0], ['Sprint 43 Planung', ['Agil','Intern'], 0],
+    ['Personas Überarbeitung', ['UX'], 0], ['Datenmodell Entwurf', ['Intern'], 0], ['Event Planung Sommerfest', [], 0],
+    ['Brainstorming Produktnamen', ['Workshop'], 0], ['Customer Journey Map', ['UX','Kunde Nordwind'], 0], ['Team Canvas', ['Agil'], 0],
+    ['Risikoanalyse Migration', ['Intern'], 0], ['Lessons Learned Q3', ['Agil'], 0], ['Budgetplanung 2027', ['Strategie'], 0],
+  ];
+  const now = Date.now();
+  const entries = rows.map(([title, tags, fav], i) => ({ id: 'id' + i, title, url: 'https://miro.com/app/board/demo' + i + '=/', password: 'pw' + i, tags, favorite: !!fav, createdAt: now, updatedAt: now - i }));
+  entries.push({ id: 'dA', title: 'Sprint 42 Planung (Kopie)', url: 'https://eu.miro.com/app/board/demo1=/?moveToWidget=1', password: 'x', tags: [], favorite: false, createdAt: now, updatedAt: 1 });
+  localStorage.setItem('L', JSON.stringify({ vault: { v: 2, kdf: { salt, iterations: 1000 }, verifier: await seal('mirohero-verifier-v1'), data: await seal(JSON.stringify({ entries })) } }));
+}
+
+const mk = (s) => ({ get: async (k) => (k in s.d ? { [k]: JSON.parse(JSON.stringify(s.d[k])) } : {}), set: async (o) => { Object.assign(s.d, JSON.parse(JSON.stringify(o))); s.save(); }, remove: async (k) => { delete s.d[k]; s.save(); } });
+
+(async () => {
+  localStorage.clear(); sessionStorage.clear();
+  if (scene !== 'setup') await seed();
+  const local = { d: JSON.parse(localStorage.getItem('L') || '{}'), save() { localStorage.setItem('L', JSON.stringify(this.d)); } };
+  const session = { d: {}, save() {} };
+  const tabs = {
+    'home-new': { url: 'https://miro.com/app/board/uXjVNewBoard42=/?moveToWidget=3458764591069657923', title: 'Produktstrategie 2028 | Miro' },
+    'home-known': { url: 'https://eu.miro.com/app/board/demo0=/?cot=14', title: 'Roadmap 2027 | Miro' },
+  };
+  const tab = tabs[scene] || { url: 'https://miro.com/app/dashboard/', title: 'Dashboard | Miro' };
+  window.chrome = { storage: { local: mk(local), session: mk(session) }, runtime: { getManifest: () => ({ version: '0.1.0' }) }, tabs: { query: async () => [tab] } };
+  await new Promise((res) => { const s = document.createElement('script'); s.src = 'popup.bundle.js'; s.onload = res; document.body.appendChild(s); });
+  await w(400);
+
+  const unlock = async () => { setVal(document.querySelector('input'), MASTER); document.querySelector('button[type=submit]').click(); for (let i = 0; i < 200 && !document.querySelector('.tab'); i++) await w(50); await w(400); };
+  const tabBtn = (n) => [...document.querySelectorAll('.tab')].find((b) => b.textContent === n).click();
+  if (scene === 'setup') { setVal(document.querySelector('input'), 'mein-sicheres-pw'); document.querySelector('input').type = 'password'; }
+  if (scene === 'unlock') { setVal(document.querySelector('input'), MASTER); }
+  if (['home-new', 'home-known', 'list', 'search', 'tags', 'config', 'about'].includes(scene)) await unlock();
+  if (scene === 'home-new') {
+    const ins = [...document.querySelectorAll('input.input')]; setVal(ins[2], 'Board-Passwort-123');
+    const t = document.querySelector('.tag-input__field'); setVal(t, 'Strategie'); t.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+  }
+  if (scene === 'list' || scene === 'search' || scene === 'tags') { tabBtn('Liste'); await w(400); }
+  if (scene === 'search') { setVal(document.querySelector('input[type=search]'), 'sprint'); }
+  if (scene === 'tags') { [...document.querySelectorAll('.chips .chip')].find((c) => c.innerText.startsWith('Agil')).click(); await w(100); [...document.querySelectorAll('.chips .chip')].find((c) => c.innerText.startsWith('Intern')).click(); }
+  if (scene === 'config') { tabBtn('Config'); }
+  if (scene === 'about') { tabBtn('About'); }
+  await w(900);
+  document.title = 'ready';
+  document.activeElement && document.activeElement.blur && document.activeElement.blur();
+})();
+</script></body></html>

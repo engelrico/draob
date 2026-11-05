@@ -599,6 +599,42 @@ select.input {
   }
 }
 
+/* Text-style button */
+.linkbtn {
+  align-self: center;
+  padding: 6px 10px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.linkbtn:hover {
+  color: var(--text);
+}
+.linkbtn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+input[type='file'].input {
+  height: auto;
+  padding: 7px 8px;
+  color: var(--muted);
+}
+input[type='file'].input::file-selector-button {
+  margin-right: 10px;
+  padding: 5px 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  cursor: pointer;
+}
+
 /* Support card (About tab) */
 a.btn {
   text-decoration: none;

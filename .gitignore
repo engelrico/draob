@@ -3,3 +3,4 @@ dist/
 coverage/
 .DS_Store
 *.zip
+tools/store-assets/.work/

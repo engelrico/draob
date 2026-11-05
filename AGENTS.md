@@ -19,8 +19,9 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 |---|---|
 | `src/background/` | Service Worker (setzt Badge auf Miro-Board-Tabs) |
 | `src/content/` | Content Script für `miro.com/app/board/*` |
-| `src/popup/`, `src/options/` | React-UIs (je `index.js` + `App.jsx`) |
-| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js` (Tresor v2), `entries.js` (Suche/Tags/Duplikate, rein), `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `models/`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
+| `src/popup/` | React-Popup (`index.js` + `App.jsx` + Views) |
+| `src/options/` | Verwaltungsseite (Sicherung, Wiederherstellen, Zurücksetzen) |
+| `src/shared/` | Geteilter Code: `crypto.js`, `storage.js` (Tresor v2), `entries.js` (Suche/Tags/Duplikate, rein), `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `download.js`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
 | `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
 | `docs/` | Wissensbasis, siehe unten |
@@ -58,6 +59,5 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 
 ## Bekannte Lücken (nicht verschlimmern)
 - Kein Auto-Lock, kein Wechsel des Masterpassworts, keine Drosselung falscher Eingaben (ADR-0001).
-- Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt noch keinen Reset-Weg in der UI.
-- Die Optionsseite hat noch keine echte Wirkung; Export/Import sind nur deaktivierte Buttons.
+- Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt nur den Reset (alles löschen) und Sicherungen, die das alte Passwort brauchen.
 - E2E-Tests fehlen noch (Playwright geplant).

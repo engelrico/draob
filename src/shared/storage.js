@@ -21,6 +21,9 @@ import { findEntryByUrl, isBoardUrl } from './miro';
 
 const VAULT = 'vault';
 const BACKUP_V1 = 'vaultBackupV1';
+const BACKUP_PRE_IMPORT = 'vaultBackupPreImport';
+const EXPORT_APP = 'draob';
+const EXPORT_VERSION = 1;
 const SESSION_KEY = 'sessionKey';
 // LEGACY, NEVER CHANGE: the project was called MiroHero before draob. This string is stored encrypted
 // in every existing vault and is checked on unlock; changing it would lock out all users.
@@ -48,6 +51,40 @@ export class DuplicateError extends Error {
     this.name = 'DuplicateError';
     this.existingId = existingId;
   }
+}
+
+/** Thrown for backup files that are not valid draob exports. */
+export class ImportError extends Error {
+  constructor(message = 'Das ist keine gültige draob-Sicherung') {
+    super(message);
+    this.name = 'ImportError';
+  }
+}
+
+const isByteArray = (a, min, max) =>
+  Array.isArray(a) &&
+  a.length >= min &&
+  a.length <= max &&
+  a.every((n) => Number.isInteger(n) && n >= 0 && n <= 255);
+const isSealed = (s) => s && isByteArray(s.iv, 12, 12) && isByteArray(s.data, 1, 50_000_000);
+
+/** Validates the shape of an export file; throws ImportError. Does not check the master password. */
+export function validateExport(file) {
+  if (!file || file.app !== EXPORT_APP || file.exportVersion !== EXPORT_VERSION)
+    throw new ImportError();
+  const v = file.vault;
+  const iterations = v?.kdf?.iterations;
+  const ok =
+    v?.v === 2 &&
+    isByteArray(v.kdf?.salt, 8, 64) &&
+    Number.isInteger(iterations) &&
+    iterations >= 1 &&
+    iterations <= 10_000_000 &&
+    isSealed(v.verifier) &&
+    isSealed(v.data);
+  if (!ok)
+    throw new ImportError('Die Sicherung ist beschädigt oder stammt aus einer unbekannten Version');
+  return v;
 }
 
 const publicEntry = ({ password: _password, ...rest }) => rest; // eslint-disable-line no-unused-vars
@@ -213,6 +250,35 @@ export function createVaultStore(areas, { iterations = DEFAULT_ITERATIONS } = {}
       );
     },
 
+    /** Encrypted backup of the whole vault. Works while locked; the file is only readable with the master password. */
+    async exportVault() {
+      const vault = await readVault();
+      if (!vault) throw new Error('Kein Tresor vorhanden');
+      if (vault.v === 1)
+        throw new Error('Bitte den Tresor zuerst entsperren, damit er aktualisiert wird');
+      return {
+        app: EXPORT_APP,
+        exportVersion: EXPORT_VERSION,
+        exportedAt: new Date().toISOString(),
+        vault,
+      };
+    },
+
+    /** Replaces the vault with a backup. The previous vault is kept once under "vaultBackupPreImport". */
+    async importVault(file) {
+      const vault = validateExport(file);
+      const current = await readVault();
+      if (current) await areas.local.set({ [BACKUP_PRE_IMPORT]: current });
+      await writeVault(vault);
+      await areas.session.remove(SESSION_KEY); // the old key does not fit the imported vault
+    },
+
+    /** Deletes everything. Irreversible. */
+    async reset() {
+      for (const key of [VAULT, BACKUP_V1, BACKUP_PRE_IMPORT]) await areas.local.remove(key);
+      await areas.session.remove(SESSION_KEY);
+    },
+
     /** Keeps `keepId`, folds tags/favorite of the others into it and deletes them. */
     async mergeDuplicates(keepId, removeIds) {
       const ctx = await load();
@@ -236,17 +302,3 @@ export function createVaultStore(areas, { iterations = DEFAULT_ITERATIONS } = {}
 /** Production instance bound to the real chrome.storage areas. */
 export const vaultStore = () =>
   createVaultStore({ local: chrome.storage.local, session: chrome.storage.session });
-
-const SETTINGS = 'userOptions';
-const DEFAULT_SETTINGS = { theme: 'default', notifications: false };
-
-export function createSettingsStore(area) {
-  return {
-    async get() {
-      return { ...DEFAULT_SETTINGS, ...((await area.get(SETTINGS))[SETTINGS] || {}) };
-    },
-    set: (settings) => area.set({ [SETTINGS]: { ...DEFAULT_SETTINGS, ...settings } }),
-  };
-}
-
-export const settingsStore = () => createSettingsStore(chrome.storage.local);

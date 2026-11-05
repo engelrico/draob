@@ -1,26 +1,43 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { findDuplicateGroups } from '../shared/entries';
 import Button from '../shared/ui/Button';
 import Icon from '../shared/ui/Icon';
+import { Notice } from '../shared/ui/Field';
 
-export default function ConfigView({ entries, onMerge }) {
+export default function ConfigView({ entries, onMerge, onExport, onManage }) {
   const groups = useMemo(() => findDuplicateGroups(entries), [entries]);
+  const [notice, setNotice] = useState(null);
+
+  const exportBackup = async () => {
+    try {
+      await onExport();
+      setNotice({ kind: 'success', text: 'Sicherung gespeichert (verschlüsselt).' });
+    } catch (err) {
+      setNotice({ kind: 'error', text: err.message });
+    }
+  };
 
   return (
     <div className="view">
       <div className="card">
         <h2 className="section-title">Daten</h2>
         <p className="muted" style={{ margin: '6px 0 12px', textAlign: 'left' }}>
-          Export und Import folgen in einer späteren Version.
+          Die Sicherung enthält nur verschlüsselte Daten. Wiederherstellen und Zurücksetzen findest
+          du in der Verwaltung.
         </p>
         <div className="row">
-          <Button block disabled>
-            <Icon name="download" /> Exportieren
+          <Button block onClick={exportBackup}>
+            <Icon name="download" /> Sicherung
           </Button>
-          <Button block disabled>
-            <Icon name="upload" /> Importieren
+          <Button block onClick={onManage}>
+            <Icon name="upload" /> Verwaltung
           </Button>
         </div>
+        {notice && (
+          <div style={{ marginTop: 10 }}>
+            <Notice kind={notice.kind}>{notice.text}</Notice>
+          </div>
+        )}
       </div>
 
       <div className="card">

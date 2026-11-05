@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "draob",
   "version": "0.1.0",
-  "description": "Passwörter für Miro-Boards sicher verwalten.",
+  "description": "Board-Passwörter verschlüsselt speichern, durchsuchen und mit einem Klick auf Miro-Boards einfügen. Alles lokal, ohne Konto.",
   "permissions": [
     "activeTab",
     "scripting",
@@ -17,7 +17,8 @@
       "16": "icons/icon_16.png",
       "48": "icons/icon_48.png",
       "128": "icons/icon_128.png"
-    }
+    },
+    "default_title": "draob"
   },
   "options_page": "options.html",
   "icons": {
@@ -28,7 +29,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*.miro.com/app/board/*"
+        "https://*.miro.com/app/board/*"
       ],
       "js": [
         "content.bundle.js"
@@ -37,5 +38,6 @@
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
-  }
+  },
+  "minimum_chrome_version": "110"
 }

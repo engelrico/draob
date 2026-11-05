@@ -3,7 +3,8 @@ import {
   DuplicateError,
   LockedError,
   WrongPasswordError,
-  createSettingsStore,
+  ImportError,
+  validateExport,
   createVaultStore,
 } from '../../src/shared/storage';
 
@@ -101,16 +102,6 @@ describe('vault store', () => {
     await store.create('master-password');
     expect(Object.keys(areas.local.data)).toEqual(['vault']);
     expect(Object.keys(areas.session.data)).toEqual(['sessionKey']);
-  });
-});
-
-describe('settings store', () => {
-  it('returns defaults and persists changes', async () => {
-    const area = memoryArea();
-    const settings = createSettingsStore(area);
-    expect(await settings.get()).toEqual({ theme: 'default', notifications: false });
-    await settings.set({ notifications: true });
-    expect(await settings.get()).toEqual({ theme: 'default', notifications: true });
   });
 });
 
@@ -252,5 +243,101 @@ describe('legacy verifier', () => {
     const { kdf, verifier } = areas.local.data.vault;
     const key = await deriveKey('master-password', kdf.salt, kdf.iterations);
     expect(await decryptPassword(verifier, key)).toBe('mirohero-verifier-v1');
+  });
+});
+
+describe('export, import and reset', () => {
+  const fresh = async () => {
+    const ctx = setup();
+    await ctx.store.create('master-password');
+    const id = await ctx.store.add({
+      title: 'Board A',
+      url: board(1),
+      password: 'pw-a',
+      tags: ['x'],
+    });
+    return { ...ctx, id };
+  };
+
+  it('exports only encrypted data, even while locked', async () => {
+    const { store, areas } = await fresh();
+    await store.lock();
+    const file = await store.exportVault();
+    expect(file).toMatchObject({ app: 'draob', exportVersion: 1 });
+    expect(file.vault).toEqual(areas.local.data.vault);
+    const raw = JSON.stringify(file);
+    for (const secret of ['Board A', 'pw-a', 'miro.com']) expect(raw).not.toContain(secret);
+  });
+
+  it('round-trips into an empty profile and unlocks with the original password', async () => {
+    const { store: source, id } = await fresh();
+    const file = JSON.parse(JSON.stringify(await source.exportVault()));
+
+    const { store: target, areas } = setup();
+    await target.importVault(file);
+    expect(await target.status()).toBe('locked');
+    await expect(target.unlock('wrong-password')).rejects.toBeInstanceOf(WrongPasswordError);
+    await target.unlock('master-password');
+    expect(await target.reveal(id)).toMatchObject({ title: 'Board A', password: 'pw-a' });
+    expect(areas.local.data).not.toHaveProperty('vaultBackupPreImport');
+  });
+
+  it('keeps the previous vault as backup, locks the session and replaces the data', async () => {
+    const { store: source } = await fresh();
+    const file = await source.exportVault();
+
+    const { store: target, areas } = setup();
+    await target.create('another-password');
+    await target.add({ title: 'Old', url: board(9), password: 'old' });
+    const before = structuredClone(areas.local.data.vault);
+
+    await target.importVault(file);
+    expect(areas.local.data.vaultBackupPreImport).toEqual(before);
+    expect(areas.session.data).not.toHaveProperty('sessionKey');
+    expect(await target.status()).toBe('locked');
+  });
+
+  it('rejects foreign, malformed and tampered files without touching the vault', async () => {
+    const { store, areas } = await fresh();
+    const good = await store.exportVault();
+    const before = structuredClone(areas.local.data.vault);
+    const bad = [
+      null,
+      {},
+      { app: 'other', exportVersion: 1, vault: good.vault },
+      { ...good, exportVersion: 2 },
+      { ...good, vault: { ...good.vault, v: 1 } },
+      { ...good, vault: { ...good.vault, kdf: { ...good.vault.kdf, iterations: 1e12 } } },
+      { ...good, vault: { ...good.vault, kdf: { salt: [1, 2], iterations: 1000 } } },
+      { ...good, vault: { ...good.vault, data: { iv: [1, 2, 3], data: [1] } } },
+      { ...good, vault: { ...good.vault, verifier: { iv: good.vault.verifier.iv, data: ['x'] } } },
+    ];
+    for (const file of bad) {
+      await expect(store.importVault(file)).rejects.toBeInstanceOf(ImportError);
+    }
+    expect(areas.local.data.vault).toEqual(before);
+    expect(areas.local.data).not.toHaveProperty('vaultBackupPreImport');
+    expect(() => validateExport(good)).not.toThrow();
+  });
+
+  it('refuses to export a v1 vault that was not migrated yet', async () => {
+    const { store, areas } = setup();
+    areas.local.data.vault = {
+      v: 1,
+      kdf: { salt: Array(16).fill(1), iterations: 1000 },
+      verifier: {},
+      entries: [],
+    };
+    await expect(store.exportVault()).rejects.toThrow();
+  });
+
+  it('reset wipes the vault, every backup and the session key', async () => {
+    const { store, areas } = await fresh();
+    areas.local.data.vaultBackupV1 = { v: 1 };
+    areas.local.data.vaultBackupPreImport = { v: 2 };
+    await store.reset();
+    expect(areas.local.data).toEqual({});
+    expect(areas.session.data).toEqual({});
+    expect(await store.status()).toBe('uninitialized');
   });
 });

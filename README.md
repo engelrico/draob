@@ -36,6 +36,7 @@ aufgeräumte Schaltzentrale direkt im Browser.
 | 🔎 **Sofort-Suche** | Findet Titel, URL und Tags in Echtzeit, ohne Groß-/Kleinschreibung und Akzente (`cafe` findet `Café`). Mehrere Wörter grenzen weiter ein. |
 | 🏷️ **Tags & Favoriten** | Ordne Boards mit Tags („Kunde A“, „Agil“) und hefte die wichtigsten mit ★ oben an. Filter-Chips zeigen, wie viele Boards jedes Tag hat. |
 | 🧹 **Keine Dubletten** | Pro Miro-Board gibt es genau einen Eintrag, auch wenn die URL mal mit `eu.miro.com` oder Parametern kommt. Bestehende Doppelte führst du mit einem Klick zusammen. |
+| 💾 **Sicherung** | Speichere den verschlüsselten Tresor als Datei und stelle ihn auf einem anderen Rechner oder nach einer Neuinstallation wieder her. |
 | 🔒 **Alles verschlüsselt** | Nicht nur Passwörter: auch Titel, URLs und Tags liegen verschlüsselt im Browser-Speicher. Ohne dein Masterpasswort steht dort nichts Lesbares. |
 | 🟡 **Badge auf Boards** | Auf Miro-Boards zeigt ein goldener Punkt am Icon: „Hier kann ich helfen.“ |
 
@@ -113,7 +114,7 @@ Für das Badge auf einem Board die Miro-Seite einmal neu laden.
 - draob ist ein **Prototyp ohne unabhängiges Sicherheits-Audit**. Für Hochsicherheits-Zugangsdaten nimm
   einen etablierten Passwortmanager. Für Board-Passwörter, die sonst in Chat-Verläufen liegen, ist es ein
   deutlicher Schritt nach vorn.
-- Es gibt noch keinen Auto-Lock nach Zeit und keinen Weg, das Masterpasswort zu ändern.
+- Es gibt noch keinen Auto-Lock nach Zeit und keinen Weg, das Masterpasswort zu ändern. Eine Sicherung ist mit dem Masterpasswort von damals verschlüsselt.
 - Wer Zugriff auf dein entsperrtes Chrome-Profil hat, kann das Popup benutzen. Sperre den Tresor, wenn du weggehst.
 
 Die technischen Details stehen in [ADR-0001](docs/decisions/ADR-0001-key-management.md) (Schlüsselmodell)
@@ -124,7 +125,7 @@ und [ADR-0002](docs/decisions/ADR-0002-encrypted-vault-v2.md) (Tresor-Format).
 - [x] Verschlüsselter Tresor mit Masterpasswort
 - [x] Board-Erkennung, Passwort-Einfügen per Klick
 - [x] Suche, Tags, Favoriten, Dublettenerkennung
-- [ ] Verschlüsselter Export und Import (Backup, Umzug auf einen anderen Rechner)
+- [x] Verschlüsselte Sicherung und Wiederherstellung, Reset bei vergessenem Passwort
 - [ ] Automatisches Sperren nach Zeit, Masterpasswort ändern
 - [ ] Chrome Web Store
 - [ ] Ende-zu-Ende-Tests im echten Browser

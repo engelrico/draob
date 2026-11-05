@@ -30,7 +30,7 @@ ausgeliefert und in den HTML-Dateien verlinkt (keine Inline-Styles, CSP-konform)
 Build: Webpack bündelt `src/*/index.js` zu `dist/<name>.bundle.js` und kopiert `public/` nach `dist/`.
 
 ## Storage (ADR-0001, ADR-0002)
-Nur `src/shared/storage.js` spricht mit `chrome.storage`. Die UI nutzt `vaultStore()`; Optionen laufen über `settingsStore()` (`userOptions`).
+Nur `src/shared/storage.js` spricht mit `chrome.storage`. Die UI nutzt `vaultStore()`.
 
 `chrome.storage.local["vault"]` (Schema v2):
 ```
@@ -48,9 +48,16 @@ Viele Einträge: `src/shared/entries.js` (rein, ohne Chrome-APIs) liefert `filte
 und Akzente, plus Tag-Filter und Favoriten), `sortEntries` (Favoriten zuerst, dann A–Z), `collectTags`, `normalizeTags`
 und `findDuplicateGroups`. Die Liste filtert im Speicher; bei einigen hundert Einträgen ist weder Paging noch Virtualisierung nötig.
 
+## Sicherung, Wiederherstellung, Reset
+`vaultStore().exportVault()` liefert `{ app: 'draob', exportVersion: 1, exportedAt, vault }` mit dem **bereits verschlüsselten** Tresor
+(funktioniert auch gesperrt; ein v1-Tresor muss vorher entsperrt/migriert werden). `importVault(file)` prüft die Form (`validateExport`:
+app, Version, `vault.v === 2`, Salt-/IV-Längen, Iterationszahl 1 bis 10 Mio.), legt den bisherigen Tresor einmalig unter
+`vaultBackupPreImport` ab, ersetzt den Tresor und beendet die Session. `reset()` löscht Tresor, beide Sicherungen und den Session-Key.
+Der Datei-Import und der Reset liegen auf der **Verwaltungsseite** (`options_page`, öffnet in einem Tab), weil Datei-Dialoge in Popups das
+Popup schließen können. Im Popup gibt es „Sicherung“ (Export) im Config-Tab und „Passwort vergessen? Tresor zurücksetzen“ im Entsperren.
+
 ## Bekannte Schulden
 | Schuld | Auswirkung | Plan |
 |---|---|---|
-| Optionen haben nur Theme/Benachrichtigungen ohne Wirkung | kosmetisch | eigene Spec |
 | Kein Auto-Lock, kein Masterpasswort-Wechsel, keine Drosselung | siehe ADR-0001 "Nicht abgedeckt" | eigene Spec |
 | Keine E2E-Tests | UI nur manuell geprüft | Playwright |
