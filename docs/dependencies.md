@@ -25,7 +25,7 @@ nicht die Nutzer der Erweiterung.
 | **CI** | `.github/workflows/ci.yml` | Prüft jeden Vorschlag: `npm audit --omit=dev --audit-level=high`, Lizenzen, Lint, Tests, Build. |
 | **Wöchentlicher Audit** | `.github/workflows/audit.yml` | Montags früh (und manuell): ausgelieferte Pakete müssen frei von bekannten Schwachstellen sein, Lizenzen erlaubt; Tooling-Audit und `npm outdated` als Zusammenfassung. Ein fehlgeschlagener geplanter Lauf wird per E-Mail gemeldet. |
 | **Release** | `.github/workflows/release.yml` | Auditiert und prüft Lizenzen vor jedem Release. |
-| **Hauptversionen-Sperre** | `.github/dependabot.yml` (`ignore`) | Hauptversionen von `@babel/*`, `eslint` und `eslint-plugin-react-hooks` werden nicht vorgeschlagen, bis die gemeinsame Migration geplant ist (siehe Backlog). |
+| **Hauptversionen-Sperre** | `.github/dependabot.yml` (`ignore`) | Hauptversionen von `@babel/*`, `eslint`, `eslint-plugin-react-hooks`, `jest`, `babel-jest` und `jest-environment-jsdom` werden nicht vorgeschlagen, bis die gemeinsame Migration geplant ist (siehe Backlog). |
 | **Node-Version** | `.nvmrc` | Eine Stelle für CI, Release und Entwickler (`engines`: `>=22`). |
 
 ### Ablauf bei einem Dependabot-PR
@@ -44,8 +44,7 @@ Diese Updates brauchen Umbauarbeit und werden einzeln mit Tests eingespielt. Emp
 
 | Paket | Aktuell | Neu | Hinweise |
 |---|---|---|---|
-| `jest`, `babel-jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren. Soll die verbleibenden Tooling-Meldungen der Jest-Kette beheben (vor dem Update prüfen). |
-| `webpack-cli`, `babel-loader` | 5.1.4, 9.2.1 | 7.x, 10.x | Zusammen mit Webpack prüfen. |
+| `jest`, `babel-jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren: ein einzelnes Update (z. B. nur `jest-environment-jsdom` 30) mischt zwei Jest-Versionen im Baum. Dependabot schlägt diese Hauptversionen deshalb nicht vor (`ignore`). Soll die verbleibenden Tooling-Meldungen der Jest-Kette beheben (vor dem Update prüfen). |
 | `@babel/*` | 7.29.x | 8.x | `@babel/core`, `preset-env` und `preset-react` nur zusammen (ein einzelnes Update scheitert am Peer-Konflikt). Konfiguration (`babel.config.json`) prüfen. |
 | `eslint`, `eslint-plugin-react-hooks` | 8.57.1, 4.6.2 | 10.x, 7.x | ESLint 9 und neuer brauchen das Flat-Config-Format: `.eslintrc.json` muss migriert werden. `eslint-plugin-react-hooks` 7 meldet außerdem `src/popup/App.jsx` (setState synchron im Effekt, `react-hooks/set-state-in-effect`): vor dem Update den Effekt umbauen. |
 
@@ -58,6 +57,9 @@ Nach den Updates auf `copy-webpack-plugin` 14 und React 19 meldet `npm audit` no
   Geprüft: ausgelieferte Dateien bei `copy-webpack-plugin` 14 identisch; React 19 gegenüber 18 in 7 UI-Szenen pixelgleich bzw. gleicher DOM (nur Attributreihenfolge und `useId`-Format
   `:r0:` → `_r_0_` unterscheiden sich); Export, Import, Reset, Entsperren, Suche, Tags und Favoriten unter React 19 durchgespielt. Das Popup-Bundle ist durch React 19 von etwa 160 auf 237 KB gewachsen
   (`webpack.config.js`: Warnschwelle auf 400 KB, weil die Dateien lokal geladen werden).
+
+- 2026-11-05 (später): `webpack-cli` 5 → 7 und `babel-loader` 9 → 10. Geprüft: gebaute Erweiterung Datei für Datei identisch (14 Dateien, gleiche SHA-256). `jest-environment-jsdom` 30 allein wurde bewusst
+  abgelehnt (mischt Jest 29 und 30); Jest-Hauptversionen sind für Dependabot gesperrt, bis Jest 30 gemeinsam migriert wird.
 
 ## Nützliche Befehle
 ```bash

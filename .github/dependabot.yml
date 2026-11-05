@@ -23,6 +23,13 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: 'eslint-plugin-react-hooks'
         update-types: ['version-update:semver-major']
+      # Jest 30: jest, babel-jest and jest-environment-jsdom must move together (a single bump mixes two Jest versions)
+      - dependency-name: 'jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'babel-jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'jest-environment-jsdom'
+        update-types: ['version-update:semver-major']
     groups:
       # Build and test tooling: all minor and patch updates in one PR. Major versions arrive as single PRs.
       dev-tooling:
