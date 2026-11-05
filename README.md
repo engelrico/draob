@@ -71,8 +71,8 @@ Der Tresor sperrt sich, wenn du Chrome schließt, oder wenn du auf **Sperren** k
 draob ist noch nicht im Chrome Web Store. Bis dahin installierst du es aus dem Quellcode (Node.js 20+):
 
 ```bash
-git clone https://github.com/engelrico/miroHero.git
-cd miroHero
+git clone https://github.com/engelrico/draob.git
+cd draob
 npm ci
 npm run build
 ```
