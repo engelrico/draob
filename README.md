@@ -169,4 +169,4 @@ Auch ohne Bier ist ein Stern fürs Repo oder eine Idee als Issue viel wert.
 draob ist ein unabhängiges Projekt und **nicht mit Miro verbunden, von Miro unterstützt oder geprüft**.
 „Miro“ ist eine Marke der jeweiligen Inhaberin.
 
-Lizenz: noch nicht festgelegt.
+Lizenz: [MIT](LICENSE).
