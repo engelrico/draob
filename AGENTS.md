@@ -36,6 +36,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 4. Nur `src/shared/storage.js` greift auf `chrome.storage` zu. UI und andere Module nutzen `vaultStore()`.
 5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test. Neue Eintragsfelder gehören in den verschlüsselten Blob (ADR-0002), nie als Klartext neben `vault.data`; Schema-Änderungen brauchen eine Migration mit Test.
 6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
+7. Der Spendenhinweis (`src/shared/support.js`) erscheint nur im About-Tab und in der README, nie als Popup, Overlay oder Aufforderung beim Start.
 
 ## Konventionen
 - ES-Module überall, keine CommonJS-Datei in `src/`.

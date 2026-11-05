@@ -6,6 +6,7 @@ Stand 2026-11-04. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 |---|---|---|
 | Manifest V3 | erfüllt | `public/manifest.json` |
 | Strikte CSP | erfüllt | `extension_pages: script-src 'self'; object-src 'self'` |
+| Spendenlink | umgesetzt, Store-Listing noch offen | Externer, klar gekennzeichneter Link nur im About-Tab, nicht aufdringlich, ohne Einfluss auf Funktionen. In der Store-Beschreibung offenlegen. Steuer und Trader-Status liegen beim Entwickler |
 | Auto-Hinweis auf Boards | umgesetzt, in Chrome noch zu prüfen | Content-Script meldet Board, Badge statt `openPopup` (braucht keine `tabs`-/Host-Permission) |
 | Zugriff auf Tab-URL/-Titel | umgesetzt, in Chrome noch zu prüfen | nur über `activeTab` beim Klick auf das Icon, nur Miro-Board-URLs werden verwendet |
 | Permission `scripting` | begründet | wird nur für "In Miro einfügen" genutzt: setzt auf Klick den Wert des Passwortfelds auf Miro-Boards |

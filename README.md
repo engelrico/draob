@@ -152,6 +152,12 @@ Icons) in `public/`.
 | [Compliance](docs/compliance.md) | Stand für den Chrome Web Store |
 | [Manuelle Tests](docs/manual-testing.md) | Testablauf vor einem Release |
 
+## Unterstützen
+
+draob ist kostenlos und bleibt es. Wenn es dir Zeit spart, freue ich mich über ein freiwilliges Bier:
+**[🍺 paypal.me/engelrico](https://paypal.me/engelrico)**. Der Link steht auch im About-Tab der Erweiterung.
+Auch ohne Bier ist ein Stern fürs Repo oder eine Idee als Issue viel wert.
+
 ## Hinweis
 
 draob ist ein unabhängiges Projekt und **nicht mit Miro verbunden, von Miro unterstützt oder geprüft**.

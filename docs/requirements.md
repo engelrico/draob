@@ -26,6 +26,7 @@ Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Proje
 | F-21 | Tags pro Eintrag, Filter-Chips mit Zähler (Mehrfachauswahl UND) | umgesetzt |
 | F-22 | Favoriten (Stern), stehen oben, Filter "nur Favoriten" | umgesetzt |
 | F-23 | Duplikate (gleiche Miro-Board-ID) beim Speichern verhindern, bestehende unter Config zusammenführen | umgesetzt |
+| F-25 | Dezenter, freiwilliger Spendenlink im About-Tab und in der README (nie als Popup oder Overlay), abschaltbar über `DONATION_URL` | umgesetzt |
 | F-24 | Alle Metadaten (Titel, URL, Tags) verschlüsselt speichern | umgesetzt, ADR-0002 |
 | F-14 | Passwörter speichern, auflisten, löschen | umgesetzt (verschlüsselt) |
 | F-15 | Passwörter dauerhaft entschlüsselbar (Masterpasswort) | umgesetzt, ADR-0001 |

@@ -598,3 +598,13 @@ select.input {
     transition: none !important;
   }
 }
+
+/* Support card (About tab) */
+a.btn {
+  text-decoration: none;
+}
+.support {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
