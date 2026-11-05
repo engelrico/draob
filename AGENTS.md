@@ -9,6 +9,7 @@ npm ci              # Abhängigkeiten
 npm run build       # baut nach dist/ (das ist die ladbare Extension)
 npm test            # Jest (tests/unit)
 npm run lint        # ESLint
+npm run licenses    # Lizenzprüfung der ausgelieferten Pakete
 npm run format      # Prettier
 ```
 Extension testen: `chrome://extensions` → Entwicklermodus → "Entpackte Erweiterung laden" → `dist/`.
@@ -38,7 +39,8 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 4. Nur `src/shared/storage.js` greift auf `chrome.storage` zu. UI und andere Module nutzen `vaultStore()`.
 5. Jede Änderung an Krypto oder Storage braucht einen Unit-Test. Neue Eintragsfelder gehören in den verschlüsselten Blob (ADR-0002), nie als Klartext neben `vault.data`; Schema-Änderungen brauchen eine Migration mit Test.
 6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
-7. Der Spendenhinweis (`src/shared/support.js`) erscheint nur im About-Tab und in der README, nie als Popup, Overlay oder Aufforderung beim Start.
+7. Neue Laufzeit-Bibliotheken nur mit Begründung, `npm run licenses` und sauberem `npm audit --omit=dev`; nichts per CDN nachladen (siehe `docs/dependencies.md`).
+8. Der Spendenhinweis (`src/shared/support.js`) erscheint nur im About-Tab und in der README, nie als Popup, Overlay oder Aufforderung beim Start.
 
 ## Releases
 Version nie von Hand ändern: `npm version <patch|minor|major>` gleicht `package.json` und `public/manifest.json` an, committet und taggt. Ein Tag-Push `vX.Y.Z`
@@ -58,6 +60,7 @@ startet den Workflow `Release`, der die ZIP als GitHub-Release anlegt. Ablauf un
 - `docs/architecture.md`: Komponenten, Datenfluss, Storage-Schema, bekannte Schulden
 - `docs/requirements.md`: Anforderungen mit IDs (F-xx)
 - `docs/decisions/`: Architekturentscheidungen (ADR): 0001 Masterpasswort/Schlüsselmodell, 0002 verschlüsselter Tresor v2
+- `docs/dependencies.md`: ausgelieferte Bibliotheken, Update-Ablauf (Dependabot, Audit), offene Hauptversionen
 - `docs/releasing.md`: Release-Ablauf (npm version, Tag, Workflow)
 - `docs/compliance.md`: Chrome-Web-Store-Status, ehrlich mit offenen Punkten
 - `docs/manual-testing.md`: manueller Testablauf

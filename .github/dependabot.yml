@@ -1,0 +1,34 @@
+# Weekly dependency update proposals (pull requests). Nothing is merged automatically.
+# See docs/dependencies.md for how to handle them.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      # Build and test tooling: all minor and patch updates in one PR. Major versions arrive as single PRs.
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+      # Shipped to users: react and react-dom always together, majors included.
+      react:
+        patterns: [react, react-dom]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Berlin
+    labels: [dependencies]
+    commit-message:
+      prefix: 'chore(ci)'

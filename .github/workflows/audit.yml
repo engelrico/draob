@@ -1,0 +1,41 @@
+name: Audit
+
+# Weekly check for newly published vulnerabilities, even when nobody pushed anything.
+# A failing scheduled run is e-mailed by GitHub.
+on:
+  schedule:
+    - cron: '17 5 * * 1' # Mondays, 05:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - name: Shipped packages must be free of known vulnerabilities
+        run: npm audit --omit=dev
+
+      - name: Shipped packages must use allowed licenses
+        run: npm run licenses
+
+      - name: Build tooling audit (informational)
+        continue-on-error: true
+        run: npm audit
+
+      - name: Outdated packages (summary)
+        run: |
+          {
+            echo '### npm outdated'
+            echo '```'
+            npm outdated || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

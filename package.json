@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "description": "Chrome extension (MV3) for managing passwords of Miro boards.",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "lint": "eslint --ext .js,.jsx src tests",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\" \"tests/**/*.js\"",
     "test": "jest",
+    "licenses": "node scripts/check-licenses.js",
     "version": "node scripts/sync-manifest-version.js && git add public/manifest.json"
   },
   "dependencies": {
