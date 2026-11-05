@@ -1,4 +1,4 @@
-import { deriveKey, encryptPassword, generateKey } from '../../src/shared/crypto';
+import { decryptPassword, deriveKey, encryptPassword, generateKey } from '../../src/shared/crypto';
 import {
   DuplicateError,
   LockedError,
@@ -191,6 +191,7 @@ describe('migration v1 -> v2', () => {
     const vault = {
       v: 1,
       kdf: { salt, iterations: 1000 },
+      // legacy verifier text from the MiroHero days; must keep unlocking old vaults
       verifier: await encryptPassword('mirohero-verifier-v1', key),
       entries: [
         { id: 'e1', title: 'Altes Board', url: board(1), password: ok },
@@ -241,5 +242,15 @@ describe('migration v1 -> v2', () => {
     expect(areas.local.data.vault).toEqual(v1);
     expect(areas.local.data).not.toHaveProperty('vaultBackupV1');
     expect(await store.status()).toBe('locked');
+  });
+});
+
+describe('legacy verifier', () => {
+  it('keeps the pre-rename verifier text so existing vaults still unlock', async () => {
+    const { store, areas } = setup();
+    await store.create('master-password');
+    const { kdf, verifier } = areas.local.data.vault;
+    const key = await deriveKey('master-password', kdf.salt, kdf.iterations);
+    expect(await decryptPassword(verifier, key)).toBe('mirohero-verifier-v1');
   });
 });

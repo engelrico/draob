@@ -1,6 +1,6 @@
 # Manual Testing Procedures
 
-## Chrome Extension: MiroHero
+## Chrome Extension: draob
 
 ### Test Steps
 1. Install extension in Chrome (load unpacked from dist/)

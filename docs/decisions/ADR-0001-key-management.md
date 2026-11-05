@@ -1,5 +1,7 @@
 # ADR-0001: Schlüsselverwaltung per Masterpasswort
 
+> Das Projekt hieß früher MiroHero und heißt jetzt draob. Der Text bleibt als Verlauf unverändert.
+
 **Status:** umgesetzt (2026-11-04) · **Datum:** 2026-11-04
 
 ## Kontext

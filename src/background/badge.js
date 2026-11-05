@@ -2,7 +2,7 @@ import { BOARD_DETECTED } from '../shared/messages';
 
 export const BADGE_TEXT = '●';
 export const BADGE_COLOR = '#ffd02f';
-export const BADGE_TITLE = 'MiroHero: Passwort für dieses Board';
+export const BADGE_TITLE = 'draob: Passwort für dieses Board';
 
 /** Marks the sender's tab with a badge. Returns true if the message was handled. */
 export function handleMessage(message, sender, action) {

@@ -1,4 +1,4 @@
-# MiroHero Chrome Extension Constitution
+# draob Chrome Extension Constitution
 
 ## Core Principles
 

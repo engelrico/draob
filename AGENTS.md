@@ -1,6 +1,6 @@
 # AGENTS.md
 
-MiroHero ist eine Chrome-Extension (Manifest V3), die Passwörter für Miro-Boards speichert.
+draob („board“ rückwärts, früher MiroHero) ist eine Chrome-Extension (Manifest V3), die Passwörter für Miro-Boards speichert. Nicht mit Miro verbunden.
 Stack: React 18, Webpack 5, Babel, Jest, ESLint, Prettier. Kein Backend.
 
 ## Befehle

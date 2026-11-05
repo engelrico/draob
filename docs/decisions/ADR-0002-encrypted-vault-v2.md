@@ -1,5 +1,7 @@
 # ADR-0002: Verschlüsselter Tresor v2 (Metadaten, Tags, Favoriten)
 
+> Das Projekt hieß früher MiroHero und heißt jetzt draob. Der Text bleibt als Verlauf unverändert.
+
 **Status:** umgesetzt (2026-11-04) · ersetzt das Speicherformat aus ADR-0001 (Schlüsselmodell bleibt)
 
 ## Kontext

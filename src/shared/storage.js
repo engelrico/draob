@@ -22,6 +22,8 @@ import { findEntryByUrl, isBoardUrl } from './miro';
 const VAULT = 'vault';
 const BACKUP_V1 = 'vaultBackupV1';
 const SESSION_KEY = 'sessionKey';
+// LEGACY, NEVER CHANGE: the project was called MiroHero before draob. This string is stored encrypted
+// in every existing vault and is checked on unlock; changing it would lock out all users.
 const VERIFIER_TEXT = 'mirohero-verifier-v1';
 export const MIN_MASTER_LENGTH = 8;
 

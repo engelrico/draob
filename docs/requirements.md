@@ -15,7 +15,7 @@ Status: `offen` = nicht umgesetzt. Quelle: ursprüngliche Featureliste des Proje
 ## Verhalten
 | ID | Anforderung | Status |
 |---|---|---|
-| F-10 | Auf `miro.com/app/board/` weist ein Badge am Icon auf MiroHero hin (statt automatischem Öffnen, das ohne Nutzergeste nicht zuverlässig geht) | umgesetzt |
+| F-10 | Auf `miro.com/app/board/` weist ein Badge am Icon auf draob hin (statt automatischem Öffnen, das ohne Nutzergeste nicht zuverlässig geht) | umgesetzt |
 | F-11 | Klick auf "Liste" zeigt die Listenansicht, "Home" wieder das Formular | umgesetzt |
 | F-12 | Listenansicht: nur Titel und Tab-Leiste bleiben; alle gespeicherten Titel aufgelistet | umgesetzt |
 | F-13 | Klick auf eine Listenzeile füllt das Formular mit den Werten | umgesetzt |

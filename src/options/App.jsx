@@ -26,7 +26,7 @@ export default function OptionsApp() {
   return (
     <div className="app app--page">
       <header className="header">
-        <h1 className="header__title">MiroHero · Optionen</h1>
+        <h1 className="header__title">draob · Optionen</h1>
       </header>
       <form className="view" onSubmit={save}>
         <div className="card form">

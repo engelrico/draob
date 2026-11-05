@@ -3,7 +3,7 @@ export default function AboutView() {
     <div className="view">
       <div className="card">
         <h2 className="card__title" style={{ textAlign: 'left' }}>
-          Über MiroHero
+          Über draob
         </h2>
         <p className="muted" style={{ textAlign: 'left', marginTop: 6 }}>
           Speichert Passwörter für Miro-Boards lokal und verschlüsselt (AES-GCM, Schlüssel aus
