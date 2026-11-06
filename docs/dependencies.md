@@ -11,11 +11,11 @@ Nur React und sein Hilfsmodul `scheduler` (mit React 19 sind `loose-envify` und 
 | `react-dom` | 19.3.1 | MIT | Rendern im Popup und auf der Verwaltungsseite |
 | `scheduler` | 0.28.0 | MIT | Hilfsmodul von `react-dom` |
 
-Die Lizenztexte stehen als `*.bundle.js.LICENSE.txt` im Build und damit auch in der ZIP. `npm run licenses` prüft, dass jedes ausgelieferte Paket
+Die Lizenztexte stehen als `*.bundle.js.LEGAL.txt` im Build und damit auch in der ZIP. `npm run licenses` prüft, dass jedes ausgelieferte Paket
 eine erlaubte Lizenz hat (MIT, ISC, BSD-2-Clause, BSD-3-Clause, Apache-2.0, 0BSD; bei SPDX-Ausdrücken zählt „A OR B“ erlaubt, wenn eine Seite erlaubt ist, und „A AND B“ nur, wenn beide erlaubt sind).
 
 ## Was nur zum Bauen gebraucht wird (nicht ausgeliefert)
-Webpack, Babel, Jest, ESLint, Prettier und ihre Plugins (siehe `devDependencies` in `package.json`). Sicherheitsmeldungen dort betreffen den Entwicklungsrechner und die CI,
+esbuild (Build und Jest-Transformer), Jest, ESLint, Prettier und ihre Plugins (siehe `devDependencies` in `package.json`; Babel steckt nur noch indirekt in Jest). Hintergrund: ADR-0003. Sicherheitsmeldungen dort betreffen den Entwicklungsrechner und die CI,
 nicht die Nutzer der Erweiterung.
 
 ## Wie Updates ankommen
@@ -25,7 +25,7 @@ nicht die Nutzer der Erweiterung.
 | **CI** | `.github/workflows/ci.yml` | Prüft jeden Vorschlag: `npm audit --omit=dev --audit-level=high`, Lizenzen, Lint, Tests, Build. |
 | **Wöchentlicher Audit** | `.github/workflows/audit.yml` | Montags früh (und manuell): ausgelieferte Pakete müssen frei von bekannten Schwachstellen sein, Lizenzen erlaubt; Tooling-Audit und `npm outdated` als Zusammenfassung. Ein fehlgeschlagener geplanter Lauf wird per E-Mail gemeldet. |
 | **Release** | `.github/workflows/release.yml` | Auditiert und prüft Lizenzen vor jedem Release. |
-| **Hauptversionen-Sperre** | `.github/dependabot.yml` (`ignore`) | Hauptversionen von `@babel/*`, `eslint`, `eslint-plugin-react-hooks`, `jest`, `babel-jest` und `jest-environment-jsdom` werden nicht vorgeschlagen, bis die gemeinsame Migration geplant ist (siehe Backlog). |
+| **Hauptversionen-Sperre** | `.github/dependabot.yml` (`ignore`) | Hauptversionen von `eslint`, `eslint-plugin-react-hooks`, `jest` und `jest-environment-jsdom` werden nicht vorgeschlagen, bis die gemeinsame Migration geplant ist (siehe Backlog). |
 | **Node-Version** | `.nvmrc` | Eine Stelle für CI, Release und Entwickler (`engines`: `>=22`). |
 
 ### Ablauf bei einem Dependabot-PR
@@ -44,8 +44,7 @@ Diese Updates brauchen Umbauarbeit und werden einzeln mit Tests eingespielt. Emp
 
 | Paket | Aktuell | Neu | Hinweise |
 |---|---|---|---|
-| `jest`, `babel-jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren: ein einzelnes Update (z. B. nur `jest-environment-jsdom` 30) mischt zwei Jest-Versionen im Baum. Dependabot schlägt diese Hauptversionen deshalb nicht vor (`ignore`). Soll die verbleibenden Tooling-Meldungen der Jest-Kette beheben (vor dem Update prüfen). |
-| `@babel/*` | 7.29.x | 8.x | `@babel/core`, `preset-env` und `preset-react` nur zusammen (ein einzelnes Update scheitert am Peer-Konflikt). Konfiguration (`babel.config.json`) prüfen. |
+| `jest`, `jest-environment-jsdom` | 29.7.0 | 30.x | Zusammen aktualisieren: ein einzelnes Update (z. B. nur `jest-environment-jsdom` 30) mischt zwei Jest-Versionen im Baum. Dependabot schlägt diese Hauptversionen deshalb nicht vor (`ignore`). Soll die verbleibenden Tooling-Meldungen der Jest-Kette beheben (vor dem Update prüfen). |
 | `eslint`, `eslint-plugin-react-hooks` | 8.57.1, 4.6.2 | 10.x, 7.x | ESLint 9 und neuer brauchen das Flat-Config-Format: `.eslintrc.json` muss migriert werden. `eslint-plugin-react-hooks` 7 meldet außerdem `src/popup/App.jsx` (setState synchron im Effekt, `react-hooks/set-state-in-effect`): vor dem Update den Effekt umbauen. |
 
 ## Bekannter Stand der Sicherheitsmeldungen (Tooling)
@@ -60,6 +59,11 @@ Nach den Updates auf `copy-webpack-plugin` 14 und React 19 meldet `npm audit` no
 
 - 2026-11-05 (später): `webpack-cli` 5 → 7 und `babel-loader` 9 → 10. Geprüft: gebaute Erweiterung Datei für Datei identisch (14 Dateien, gleiche SHA-256). `jest-environment-jsdom` 30 allein wurde bewusst
   abgelehnt (mischt Jest 29 und 30); Jest-Hauptversionen sind für Dependabot gesperrt, bis Jest 30 gemeinsam migriert wird.
+
+- 2026-11-06: Build von Webpack und Babel auf **esbuild** umgestellt (ADR-0003). Entfernt: `webpack`, `webpack-cli`, `babel-loader`, `css-loader`, `mini-css-extract-plugin`,
+  `copy-webpack-plugin`, `@babel/core`, `@babel/preset-env`, `@babel/preset-react`, `babel-jest`; neu: `esbuild`. Pakete 670 → 524, `node_modules` 137 → 108 MB, Build 3,2 s → 45 ms.
+  Geprüft: Popup und Verwaltungsseite in 7 von 8 UI-Szenen pixelgleich (achte: nur Tab-Überblendung), Export, Import, Reset, Entsperren, Suche, Tags, Favoriten, Speichern, Löschen
+  unverändert; 64 Tests (5 neue Build-Tests). Zusätzlich Formularzustand auf Funktions-Updates umgestellt (siehe `AGENTS.md`).
 
 ## Nützliche Befehle
 ```bash

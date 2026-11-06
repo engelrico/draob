@@ -24,10 +24,10 @@ Die Seite von Miro hat dafür ein reguläres Feld (`placeholder="Passwort"`, kei
 UI-Komponenten (`src/popup/`): `App` (Status, aktiver Tab, Formularzustand) → `Header`, `Tabs`, `UnlockView`,
 `HomeView`, `ListView`, `ConfigView`, `AboutView`. Wiederverwendbare Bausteine in `src/shared/ui/`
 (`Button`, `Field`/`TextInput`/`PasswordInput`/`Notice`, `Icon`). Styles: `src/shared/theme.css`
-(Design-Tokens als CSS-Variablen + Basis-Klassen), per `mini-css-extract-plugin` als `dist/popup.css` / `options.css`
+(Design-Tokens als CSS-Variablen + Basis-Klassen), von esbuild als eine gemeinsame `dist/theme.css` für Popup und Verwaltungsseite
 ausgeliefert und in den HTML-Dateien verlinkt (keine Inline-Styles, CSP-konform).
 
-Build: Webpack bündelt `src/*/index.js` zu `dist/<name>.bundle.js` und kopiert `public/` nach `dist/`.
+Build: `scripts/build.mjs` (esbuild) bündelt `src/*/index.js(x)` zu `dist/<name>.bundle.js`, `src/shared/theme.css` zu `dist/theme.css`, legt Lizenzhinweise der gebündelten Pakete als `*.LEGAL.txt` daneben und kopiert `public/` nach `dist/` (ADR-0003).
 
 ## Storage (ADR-0001, ADR-0002)
 Nur `src/shared/storage.js` spricht mit `chrome.storage`. Die UI nutzt `vaultStore()`.

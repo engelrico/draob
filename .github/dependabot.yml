@@ -14,19 +14,14 @@ updates:
     commit-message:
       prefix: 'chore(deps)'
     # Major versions that must be migrated together, not one by one (see "Offene Hauptversionen" in docs/dependencies.md):
-    #  - Babel 8 needs @babel/core, preset-env and preset-react at once
     #  - ESLint 9+ needs the flat config format; eslint-plugin-react-hooks 7 flags code in src/popup/App.jsx
     ignore:
-      - dependency-name: '@babel/*'
-        update-types: ['version-update:semver-major']
       - dependency-name: 'eslint'
         update-types: ['version-update:semver-major']
       - dependency-name: 'eslint-plugin-react-hooks'
         update-types: ['version-update:semver-major']
-      # Jest 30: jest, babel-jest and jest-environment-jsdom must move together (a single bump mixes two Jest versions)
+      # Jest 30: jest and jest-environment-jsdom must move together (a single bump mixes two Jest versions)
       - dependency-name: 'jest'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'babel-jest'
         update-types: ['version-update:semver-major']
       - dependency-name: 'jest-environment-jsdom'
         update-types: ['version-update:semver-major']

@@ -146,7 +146,7 @@ npm test        # Unit-Tests (Jest)
 npm run lint    # ESLint
 ```
 
-Stack: React 18, Webpack 5, Manifest V3. Der Quellcode liegt in `src/`, statische Dateien (Manifest, HTML,
+Stack: React 19, esbuild, Manifest V3. Der Quellcode liegt in `src/`, statische Dateien (Manifest, HTML,
 Icons) in `public/`.
 
 | Mehr dazu | |
