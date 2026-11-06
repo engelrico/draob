@@ -43,7 +43,7 @@ Im About-Tab gibt es einen Link zu paypal.me. Erst wenn du darauf klickst, verl�
 PayPal gilt die Datenschutzerklärung von PayPal. draob selbst überträgt dabei keine Daten.
 
 ## Feedback-Links
-Im About-Tab gibt es zwei Links für Rückmeldungen: einen zu den GitHub-Vorlagen für Fehler und Ideen und einen zum E-Mail-Entwurf (Mailprogramm oder Gmail im Browser) sowie einen Knopf, der die Adresse kopiert. Beide öffnen erst auf deinen Klick dein Mailprogramm beziehungsweise GitHub.
+Im About-Tab gibt es zwei Links für Rückmeldungen: einen zu den GitHub-Vorlagen für Fehler und Ideen und einen „Per E-Mail schreiben“. Beide öffnen erst auf deinen Klick dein Mailprogramm beziehungsweise GitHub.
 Der E-Mail-Entwurf enthält Version der Erweiterung, Browser und System und bittet, keine Passwörter oder Board-Links mitzuschicken. Du siehst und änderst den Entwurf, bevor du ihn sendest.
 draob selbst überträgt dabei nichts. Meldungen auf GitHub sind öffentlich, für sie gelten die Regeln von GitHub.
 

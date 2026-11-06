@@ -37,9 +37,11 @@ export function describeEnvironment(nav = globalThis.navigator) {
   return { browser, os };
 }
 
-function feedbackDraft({ version, env }) {
+/** mailto: link with a prepared subject and text. The user sees and can edit the draft before sending. */
+export function feedbackMailto({ version, env }) {
   const v = version || UNKNOWN;
-  const lines = [
+  const subject = `draob Feedback (v${v})`;
+  const body = [
     'Hallo,',
     '',
     'Was ist passiert bzw. welche Idee hast du?',
@@ -54,26 +56,6 @@ function feedbackDraft({ version, env }) {
     `System: ${env?.os ?? UNKNOWN}`,
     '',
     'Bitte keine Passwörter, Board-Links oder vertraulichen Screenshots mitschicken.',
-  ];
-  return { subject: `draob Feedback (v${v})`, lines };
-}
-
-/** mailto: link with a prepared subject and text. The user sees and can edit the draft before sending. */
-export function feedbackMailto({ version, env }) {
-  const { subject, lines } = feedbackDraft({ version, env });
-  const body = lines.join('\r\n');
+  ].join('\r\n');
   return `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
-/** Same draft as a Gmail compose link, for people without a mail program registered in the browser. */
-export function feedbackGmail({ version, env }) {
-  const { subject, lines } = feedbackDraft({ version, env });
-  const query = new URLSearchParams({
-    view: 'cm',
-    fs: '1',
-    to: FEEDBACK_EMAIL,
-    su: subject,
-    body: lines.join('\n'),
-  });
-  return `https://mail.google.com/mail/?${query}`;
 }
