@@ -13,6 +13,7 @@ Stand 2026-11-05. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Reset bei vergessenem Passwort, Sicherung | umgesetzt | Popup (Entsperren, Config) und Verwaltungsseite, getestet |
 | `minimum_chrome_version`, https-Match, Tooltip | umgesetzt | `public/manifest.json` |
 | Abhängigkeiten und Lizenzen | erfüllt | Nur React-Stack ausgeliefert, alles MIT, `npm audit --omit=dev` = 0, `npm run licenses` in CI, Dependabot und wöchentlicher Audit (`docs/dependencies.md`) |
+| Seite aus der Liste öffnen | umgesetzt, in Chrome noch zu prüfen | `chrome.tabs.create` braucht keine zusätzliche Berechtigung; nur http(s)-Adressen werden geöffnet (`src/shared/links.js`, getestet). Datenschutzerklärung unverändert |
 | Spendenlink | umgesetzt, Store-Listing noch offen | Externer, klar gekennzeichneter Link nur im About-Tab, nicht aufdringlich, ohne Einfluss auf Funktionen. In der Store-Beschreibung offenlegen. Steuer und Trader-Status liegen beim Entwickler |
 | Auto-Hinweis auf Boards | umgesetzt, in Chrome noch zu prüfen | Content-Script meldet Board, Badge statt `openPopup` (braucht keine `tabs`-/Host-Permission) |
 | Zugriff auf Tab-URL/-Titel | umgesetzt, in Chrome noch zu prüfen | nur über `activeTab` beim Klick auf das Icon, nur Miro-Board-URLs werden verwendet |

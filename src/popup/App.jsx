@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { findEntryByUrl } from '../shared/miro';
 import { DuplicateError, vaultStore } from '../shared/storage';
 import { backupFilename, downloadJson } from '../shared/download';
-import { fillPasswordInActiveTab, getActiveBoard } from '../shared/tabs';
+import { fillPasswordInActiveTab, getActiveBoard, openInNewTab } from '../shared/tabs';
 import AboutView from './AboutView';
 import ConfigView from './ConfigView';
 import Header from './Header';
@@ -159,6 +159,11 @@ export default function App() {
   const fillInMiro = async () =>
     setNotice(FILL_NOTICES[await fillPasswordInActiveTab(form.password)]);
 
+  const openEntry = async (url, { background }) => {
+    const opened = await openInNewTab(url, { background });
+    if (opened && !background) window.close(); // the new tab takes focus; make sure the popup goes away
+  };
+
   const pick = async (id) => {
     setForm({ id, ...(await store.reveal(id)) });
     changeTab('home');
@@ -212,6 +217,7 @@ export default function App() {
               <ListView
                 entries={entries}
                 onPick={pick}
+                onOpen={openEntry}
                 onRemove={remove}
                 onToggleFavorite={toggleFavorite}
               />

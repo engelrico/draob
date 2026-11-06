@@ -25,8 +25,14 @@ shoot() { # name url width height scale out
 }
 
 # 1) popup scenes (380x640 @2x) from the real bundles with demo data
-for scene in home-known home-new list tags unlock config; do
+for scene in home-known home-new list search tags unlock config; do
   shoot "$scene" "http://localhost:$PORT/harness.html?scene=$scene" 380 640 2 "$WORK/shots/$scene.png"
+done
+
+# README screenshots (same scenes, shown at 380x640 @2x)
+mkdir -p docs/screenshots
+for scene in home-known home-new list search tags config; do
+  cp "$WORK/shots/$scene.png" "docs/screenshots/$scene.png"
 done
 
 # 2) store graphics

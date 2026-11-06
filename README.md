@@ -34,6 +34,7 @@ aufgeräumte Schaltzentrale direkt im Browser.
 | 🎯 **Erkennt dein Board** | Öffnest du ein Miro-Board, übernimmt draob URL und Titel. Ist das Board schon gespeichert, lädt es den Eintrag, sonst bietet es ihn als neuen an. |
 | ⚡ **Passwort mit einem Klick** | „In Miro einfügen“ trägt das Passwort in das Feld der Miro-Seite ein. Absenden tust du selbst, draob drückt nie etwas für dich. |
 | 🔎 **Sofort-Suche** | Findet Titel, URL und Tags in Echtzeit, ohne Groß-/Kleinschreibung und Akzente (`cafe` findet `Café`). Mehrere Wörter grenzen weiter ein. |
+| 🔗 **Seite direkt öffnen** | Jeder Eintrag hat ein Link-Symbol: ein Klick öffnet die gespeicherte Seite in einem neuen Tab (Cmd/Strg-Klick im Hintergrund). Ein Klick auf den Eintrag selbst öffnet nur das Formular. |
 | 🏷️ **Tags & Favoriten** | Ordne Boards mit Tags („Kunde A“, „Agil“) und hefte die wichtigsten mit ★ oben an. Filter-Chips zeigen, wie viele Boards jedes Tag hat. |
 | 🧹 **Keine Dubletten** | Pro Miro-Board gibt es genau einen Eintrag, auch wenn die URL mal mit `eu.miro.com` oder Parametern kommt. Bestehende Doppelte führst du mit einem Klick zusammen. |
 | 💾 **Sicherung** | Speichere den verschlüsselten Tresor als Datei und stelle ihn auf einem anderen Rechner oder nach einer Neuinstallation wieder her. |

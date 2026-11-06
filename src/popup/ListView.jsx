@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react';
 import { collectTags, filterEntries, sortEntries } from '../shared/entries';
 import Button from '../shared/ui/Button';
 import Chip from '../shared/ui/Chip';
+import { toOpenableUrl } from '../shared/links';
 import Icon from '../shared/ui/Icon';
 
-export default function ListView({ entries, onPick, onRemove, onToggleFavorite }) {
+export default function ListView({ entries, onPick, onOpen, onRemove, onToggleFavorite }) {
   const [query, setQuery] = useState('');
   const [activeTags, setActiveTags] = useState([]);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
@@ -88,7 +89,9 @@ export default function ListView({ entries, onPick, onRemove, onToggleFavorite }
               </button>
               <button className="list__main" onClick={() => onPick(entry.id)}>
                 <span className="list__title">{entry.title}</span>
-                <span className="list__url">{entry.url}</span>
+                <span className="list__url" title={entry.url}>
+                  {entry.url}
+                </span>
                 {entry.tags.length > 0 && (
                   <span className="list__tags">
                     {entry.tags.map((tag) => (
@@ -97,6 +100,23 @@ export default function ListView({ entries, onPick, onRemove, onToggleFavorite }
                   </span>
                 )}
               </button>
+              {confirming !== entry.id && (
+                <Button
+                  variant="ghost"
+                  icon
+                  className="list__link"
+                  aria-label={`${entry.title} in neuem Tab öffnen`}
+                  title={
+                    toOpenableUrl(entry.url)
+                      ? 'Seite öffnen (Cmd/Strg-Klick: im Hintergrund)'
+                      : 'Keine gültige Web-Adresse'
+                  }
+                  disabled={!toOpenableUrl(entry.url)}
+                  onClick={(e) => onOpen(entry.url, { background: e.metaKey || e.ctrlKey })}
+                >
+                  <Icon name="link" />
+                </Button>
+              )}
               {confirming === entry.id ? (
                 <>
                   <Button variant="danger" onClick={() => onRemove(entry.id)}>

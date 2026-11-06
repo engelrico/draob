@@ -278,6 +278,14 @@ p {
 .btn--secondary:hover:not(:disabled) {
   border-color: #4a4a55;
 }
+.btn--ghost {
+  background: none;
+  color: var(--muted);
+}
+.btn--ghost:hover:not(:disabled) {
+  color: var(--gold);
+  background: rgba(255, 208, 47, 0.1);
+}
 .btn--danger {
   background: none;
   color: var(--danger);

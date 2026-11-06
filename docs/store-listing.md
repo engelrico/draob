@@ -20,6 +20,7 @@ draob speichert die Passwörter deiner Miro-Boards verschlüsselt auf deinem Ger
 gespeichert ist, und fügt das Passwort auf Klick in das Passwortfeld ein.
 
 • Board erkannt: Titel und URL werden übernommen, vorhandene Einträge automatisch gefunden
+• Gespeicherte Seite mit einem Klick auf das Link-Symbol im neuen Tab öffnen
 • Passwort mit einem Klick einfügen (du bestätigst selbst, draob sendet nie etwas ab)
 • Sofort-Suche in Titel, URL und Tags, ohne Beachtung von Groß-/Kleinschreibung und Akzenten
 • Tags und Favoriten für 20, 30 oder mehr Boards

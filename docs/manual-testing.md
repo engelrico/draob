@@ -27,6 +27,10 @@ Mindestversion laut Manifest: Chrome 110.
 - [ ] Mehrere Einträge anlegen; Suche (Teilwort, Akzent, mehrere Wörter), Tag-Filter (mehrere Tags), Favoriten-Filter
 - [ ] Stern setzt Favorit, Favoriten stehen oben
 - [ ] Löschen fragt nach („Löschen? / Nein“)
+- [ ] Link-Symbol an einem Eintrag: öffnet die gespeicherte Seite in einem **neuen Tab** (Popup schließt sich); Cmd/Strg-Klick öffnet im Hintergrund und das Popup bleibt
+- [ ] Klick auf den Eintrag selbst öffnet **nur** das Formular, es öffnet sich kein Tab
+- [ ] Auf dem geöffneten Board: goldener Punkt am Symbol → Icon klicken → „bereits gespeichert“ → „In Miro einfügen“
+- [ ] Eintrag mit ungültiger Adresse (z. B. `irgendwas`): Link-Symbol ist deaktiviert
 - [ ] Gleiches Board zweimal speichern: Hinweis „Für dieses Board gibt es schon einen Eintrag“ → „Bestehenden Eintrag aktualisieren“
 - [ ] Config → „Doppelte Einträge“ zeigt keine Treffer (oder fasst vorhandene zusammen)
 
