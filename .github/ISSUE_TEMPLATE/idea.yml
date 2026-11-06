@@ -1,0 +1,27 @@
+name: Idee vorschlagen
+description: Ein Wunsch oder eine Verbesserung
+title: 'Idee: '
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für deine Idee! **Diese Meldung ist öffentlich. Bitte keine Passwörter, Board-Links oder vertraulichen Screenshots einfügen.**
+  - type: textarea
+    id: problem
+    attributes:
+      label: Was stört oder fehlt dir?
+      description: Beschreibe die Situation, in der dir etwas fehlt.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Wie stellst du dir die Lösung vor?
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Datenschutz
+      options:
+        - label: Ich habe keine Passwörter oder vertraulichen Board-Links eingefügt.
+          required: true

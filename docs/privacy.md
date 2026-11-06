@@ -42,6 +42,11 @@ Erweiterung löscht Chrome die lokal gespeicherten Daten ebenfalls. Ein vergesse
 Im About-Tab gibt es einen Link zu paypal.me. Erst wenn du darauf klickst, verlässt du die Erweiterung. Für die Datenverarbeitung bei
 PayPal gilt die Datenschutzerklärung von PayPal. draob selbst überträgt dabei keine Daten.
 
+## Feedback-Links
+Im About-Tab gibt es zwei Links für Rückmeldungen: einen zu den GitHub-Vorlagen für Fehler und Ideen und einen „Per E-Mail schreiben“. Beide öffnen erst auf deinen Klick dein Mailprogramm beziehungsweise GitHub.
+Der E-Mail-Entwurf enthält Version der Erweiterung, Browser und System und bittet, keine Passwörter oder Board-Links mitzuschicken. Du siehst und änderst den Entwurf, bevor du ihn sendest.
+draob selbst überträgt dabei nichts. Meldungen auf GitHub sind öffentlich, für sie gelten die Regeln von GitHub.
+
 ## Keine Verbindung zu Miro
 draob ist ein unabhängiges Projekt und nicht mit Miro verbunden, von Miro unterstützt oder geprüft. „Miro“ ist eine Marke der jeweiligen
 Inhaberin.
@@ -58,5 +63,5 @@ Fragen zum Datenschutz und zu dieser Erklärung: draob@engelrico.de
 draob processes everything locally in your browser. Titles, URLs, tags and board passwords are stored encrypted (AES-256-GCM, key derived
 from your master password with PBKDF2) in the extension's local storage. There is no server, no account, no analytics, no tracking and no data
 is sent to the developer or to third parties. The extension runs only on `https://*.miro.com/app/board/*`; it reads the URL and title of the
-active tab only when you click its icon, and fills a password field only when you click "In Miro einfügen". You can erase all data at any time
+active tab only when you click its icon, and fills a password field only when you click "In Miro einfügen". The About tab has feedback links (GitHub issue forms, e-mail draft with version/browser/system); they open only when you click them and the extension sends nothing itself. You can erase all data at any time
 via "Verwaltung → Tresor zurücksetzen". draob is not affiliated with Miro. Contact: draob@engelrico.de.

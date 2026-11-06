@@ -167,7 +167,7 @@ Auch ohne Bier ist ein Stern fürs Repo oder eine Idee als Issue viel wert.
 
 ## Kontakt
 
-Fragen, Ideen und Fehler am liebsten als [Issue](https://github.com/engelrico/draob/issues). Vertrauliche Anliegen und Sicherheitsmeldungen per E-Mail an **draob@engelrico.de**.
+Fragen, Ideen und Fehler am liebsten als [Issue](https://github.com/engelrico/draob/issues) (es gibt Vorlagen). Beide Wege stehen auch im About-Tab der Erweiterung. Vertrauliche Anliegen und Sicherheitsmeldungen per E-Mail an **draob@engelrico.de**.
 
 ## Hinweis
 

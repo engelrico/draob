@@ -26,6 +26,7 @@ gespeichert ist, und fügt das Passwort auf Klick in das Passwortfeld ein.
 • Tags und Favoriten für 20, 30 oder mehr Boards
 • Dubletten werden verhindert, vorhandene lassen sich zusammenführen
 • Verschlüsselte Sicherung und Wiederherstellung
+• Feedback per Klick im About-Tab (GitHub oder E-Mail), ohne dass die App Daten sendet
 • Alles lokal: AES-256-GCM, Schlüssel aus deinem Masterpasswort (PBKDF2), keine Konten, kein Server, kein Tracking
 
 Wichtig: Ein vergessenes Masterpasswort lässt sich nicht wiederherstellen. Speichere bei Bedarf eine verschlüsselte Sicherung.

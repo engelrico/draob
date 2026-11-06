@@ -1,0 +1,48 @@
+name: Fehler melden
+description: Etwas funktioniert nicht wie erwartet
+title: 'Fehler: '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fürs Melden! **Diese Meldung ist öffentlich. Bitte keine Passwörter, Board-Links oder vertraulichen Screenshots einfügen.**
+        Vertrauliches bitte per E-Mail an draob@engelrico.de, Sicherheitslücken wie in der [Sicherheitsrichtlinie](https://github.com/engelrico/draob/security/policy) beschrieben.
+  - type: textarea
+    id: what
+    attributes:
+      label: Was ist passiert?
+      description: Beschreibe kurz, was du gemacht hast und was stattdessen passiert ist.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Schritte zum Nachstellen
+      placeholder: |
+        1. Popup öffnen
+        2. ...
+  - type: textarea
+    id: expected
+    attributes:
+      label: Was hättest du erwartet?
+  - type: input
+    id: version
+    attributes:
+      label: draob-Version
+      description: Steht im About-Tab der Erweiterung, z. B. 0.1.1.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser und System
+      description: Steht ebenfalls im About-Tab.
+      placeholder: Chrome 142 auf macOS
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Datenschutz
+      options:
+        - label: Ich habe keine Passwörter oder vertraulichen Board-Links eingefügt.
+          required: true
