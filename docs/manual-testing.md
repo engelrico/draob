@@ -4,12 +4,14 @@ Vor jedem Einreichen im Chrome Web Store einmal komplett durchgehen. Ergebnis mi
 Mindestversion laut Manifest: Chrome 110.
 
 ## Vorbereitung
+
 - [ ] `npm ci && npm run build`
 - [ ] `chrome://extensions` → Entwicklermodus → „Entpackte Erweiterung laden“ → `dist/`
 - [ ] Name „draob“, Icon, Version und genau diese Berechtigungen sehen: `storage`, `activeTab`, `scripting` (+ Zugriff nur auf miro.com Boards)
 - [ ] Fehlerseite der Erweiterung („Fehler“-Knopf) ist leer, Service-Worker-Konsole ohne Fehler
 
 ## Tresor
+
 - [ ] Erster Start: Masterpasswort mit < 8 Zeichen wird abgelehnt, mit ≥ 8 klappt es
 - [ ] Falsches Passwort beim Entsperren zeigt „Falsches Masterpasswort“
 - [ ] „Sperren“ sperrt, Chrome komplett schließen und neu öffnen: Entsperren nötig, Einträge noch da
@@ -17,6 +19,7 @@ Mindestversion laut Manifest: Chrome 110.
       sind (Titel, URLs, Passwörter über „In Liste klicken“ kontrollieren)
 
 ## Board erkennen und einfügen
+
 - [ ] Miro-Board öffnen und neu laden: goldener Punkt am Symbol, Tooltip „draob: Passwort für dieses Board“
 - [ ] Popup auf einem **neuen** Board: Hinweis „Neues Miro-Board erkannt“, Titel ohne „| Miro“ und URL ohne Query vorausgefüllt
 - [ ] Passwort eintragen, Tags vergeben, speichern; Popup schließen, erneut öffnen: „Dieses Board ist bereits gespeichert“, Eintrag geladen
@@ -24,6 +27,7 @@ Mindestversion laut Manifest: Chrome 110.
 - [ ] Auf einer Nicht-Board-Seite (z. B. miro.com/app/dashboard/) bleibt das Formular leer, kein Badge
 
 ## Liste, Suche, Ordnung
+
 - [ ] Mehrere Einträge anlegen; Suche (Teilwort, Akzent, mehrere Wörter), Tag-Filter (mehrere Tags), Favoriten-Filter
 - [ ] Stern setzt Favorit, Favoriten stehen oben
 - [ ] Löschen fragt nach („Löschen? / Nein“)
@@ -35,6 +39,7 @@ Mindestversion laut Manifest: Chrome 110.
 - [ ] Config → „Doppelte Einträge“ zeigt keine Treffer (oder fasst vorhandene zusammen)
 
 ## Sicherung, Wiederherstellung, Reset
+
 - [ ] Config → „Sicherung“ lädt `draob-backup-JJJJ-MM-TT.json` herunter; Datei öffnen: kein Titel, keine URL, kein Passwort im Klartext
 - [ ] Config → „Verwaltung“ öffnet die Verwaltungsseite in einem Tab
 - [ ] Verwaltung → Wiederherstellen: eine Textdatei oder fremde JSON wird abgelehnt, die echte Sicherung wird akzeptiert
@@ -43,8 +48,9 @@ Mindestversion laut Manifest: Chrome 110.
 - [ ] „Ja, alles löschen“ führt zur Einrichtung („Masterpasswort festlegen“), alte Daten sind weg
 
 ## Oberfläche und Qualität
+
 - [ ] About-Tab: Spendenlink öffnet paypal.me in neuem Tab (nur auf Klick, kein Popup beim Start)
-- [ ] About-Tab, Feedback: „Fehler oder Idee auf GitHub melden“ zeigt die Vorlagen-Auswahl (Fehler, Idee); „Per E-Mail schreiben“ öffnet das Mailprogramm mit Entwurf an draob@engelrico.de (Betreff mit Version, Version/Browser/System im Text, Hinweis „keine Passwörter“)
+- [ ] About-Tab, Feedback: „Fehler oder Idee auf GitHub melden“ zeigt die Vorlagen-Auswahl (Fehler, Idee); „E-Mail“ öffnet das Mailprogramm (kein leerer neuer Tab), „Kopieren“ legt die Adresse in die Zwischenablage, der ganze About-Tab passt ohne Scrollen ins Popup; „E-Mail“ öffnet das Mailprogramm mit Entwurf an draob@engelrico.de (Betreff mit Version, Version/Browser/System im Text, Hinweis „keine Passwörter“)
 - [ ] Die Karte zeigt „Version … · Chrome …“ und die Adresse als Text
 - [ ] Popup öffnet in unter 200 ms, Tabs reagieren sofort
 - [ ] Keine CSP-Fehler und keine Fehler in der Popup-Konsole (Rechtsklick auf das Popup → Untersuchen)
@@ -52,6 +58,7 @@ Mindestversion laut Manifest: Chrome 110.
 - [ ] Optional: Edge ausprobieren (gleicher Build)
 
 ## Ergebnis
+
 | Datum | Chrome-Version | Ergebnis | Bemerkungen |
-|---|---|---|---|
-| | | | |
+| ----- | -------------- | -------- | ----------- |
+|       |                |          |             |

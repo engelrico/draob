@@ -52,7 +52,7 @@ export default function AboutView() {
             style={{ flex: 1 }}
             href={feedbackMailto({ version, env })}
           >
-            ✉️ E-Mail schreiben
+            ✉️ E-Mail
           </a>
           <button
             type="button"
@@ -60,7 +60,7 @@ export default function AboutView() {
             style={{ flex: 1 }}
             onClick={copyAddress}
           >
-            {copied ? '✓ Kopiert' : '📋 Adresse kopieren'}
+            {copied ? '✓ Kopiert' : '📋 Kopieren'}
           </button>
         </div>
         {REVIEW_URL && (
