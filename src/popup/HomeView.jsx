@@ -23,7 +23,10 @@ export default function HomeView({
 }) {
   const bind = (key) => ({
     value: form[key],
-    onChange: (e) => setForm({ ...form, [key]: e.target.value }),
+    onChange: (e) => {
+      const { value } = e.target;
+      setForm((current) => ({ ...current, [key]: value }));
+    },
   });
   const submit = (e) => {
     e.preventDefault();
@@ -41,7 +44,7 @@ export default function HomeView({
         <TagInput
           label="Tags"
           value={form.tags}
-          onChange={(tags) => setForm({ ...form, tags })}
+          onChange={(tags) => setForm((current) => ({ ...current, tags }))}
           suggestions={suggestions}
         />
         <div className="form__actions">
@@ -54,7 +57,7 @@ export default function HomeView({
             className={`star${form.favorite ? ' star--on' : ''}`}
             aria-pressed={form.favorite}
             aria-label={form.favorite ? 'Aus Favoriten entfernen' : 'Zu Favoriten'}
-            onClick={() => setForm({ ...form, favorite: !form.favorite })}
+            onClick={() => setForm((current) => ({ ...current, favorite: !current.favorite }))}
           >
             <Icon name="star" filled={form.favorite} />
           </Button>

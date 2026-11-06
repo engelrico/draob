@@ -99,7 +99,7 @@ export default function App() {
     const list = await refresh();
 
     if (board && findEntryByUrl(list, board.url)?.id === savedId) {
-      setForm({ ...form, id: savedId }); // stay on the board's entry
+      setForm((current) => ({ ...current, id: savedId })); // stay on the board's entry
       setBoardState('known');
     } else {
       setForm(EMPTY_FORM);
@@ -115,7 +115,7 @@ export default function App() {
     const { title, url, password, tags, favorite } = form;
     await store.update(existingId, { title, url, password, tags, favorite });
     setDuplicateId(null);
-    setForm({ ...form, id: existingId });
+    setForm((current) => ({ ...current, id: existingId }));
     setNotice({ kind: 'success', text: 'Bestehenden Eintrag aktualisiert.' });
     refresh();
   };
