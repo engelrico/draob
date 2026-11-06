@@ -3,6 +3,7 @@ import {
   ISSUES_URL,
   REVIEW_URL,
   describeEnvironment,
+  feedbackGmail,
   feedbackMailto,
 } from '../../src/shared/feedback';
 
@@ -100,5 +101,19 @@ describe('feedback urls', () => {
       expect(url === '' || /^https:\/\/[^\s]+$/.test(url)).toBe(true);
     }
     expect(ISSUES_URL).not.toBe('');
+  });
+});
+
+describe('feedbackGmail', () => {
+  const url = new URL(
+    feedbackGmail({ version: '0.1.1', env: { browser: 'Chrome 142', os: 'macOS' } }),
+  );
+
+  it('is an https compose link to the feedback address with the same draft', () => {
+    expect(url.origin).toBe('https://mail.google.com');
+    expect(url.searchParams.get('to')).toBe(FEEDBACK_EMAIL);
+    expect(url.searchParams.get('su')).toBe('draob Feedback (v0.1.1)');
+    expect(url.searchParams.get('body')).toContain('Browser: Chrome 142');
+    expect(url.searchParams.get('body')).toContain('keine Passwörter');
   });
 });

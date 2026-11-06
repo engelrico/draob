@@ -4,6 +4,7 @@ import {
   FEEDBACK_EMAIL,
   REVIEW_URL,
   describeEnvironment,
+  feedbackGmail,
   feedbackMailto,
 } from '../shared/feedback';
 import { DONATION_URL } from '../shared/support';
@@ -46,13 +47,22 @@ export default function AboutView() {
           🐞 Fehler oder Idee auf GitHub melden ↗
         </a>
         <div className="row">
-          {/* No target: a mailto link opened in a new tab shows an empty page */}
+          {/* No target on mailto: a new tab would only show an empty page */}
           <a
             className="btn btn--secondary"
             style={{ flex: 1 }}
             href={feedbackMailto({ version, env })}
           >
-            ✉️ E-Mail
+            ✉️ Mail
+          </a>
+          <a
+            className="btn btn--secondary"
+            style={{ flex: 1 }}
+            href={feedbackGmail({ version, env })}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Gmail ↗
           </a>
           <button
             type="button"
@@ -60,7 +70,7 @@ export default function AboutView() {
             style={{ flex: 1 }}
             onClick={copyAddress}
           >
-            {copied ? '✓ Kopiert' : '📋 Kopieren'}
+            {copied ? '✓ Kopiert' : '📋 Kopie'}
           </button>
         </div>
         {REVIEW_URL && (
