@@ -153,6 +153,7 @@ Icons) in `public/`.
 | Mehr dazu | |
 |---|---|
 | [AGENTS.md](AGENTS.md) | Einstieg für Mitwirkende und KI-Agenten: Befehle, Regeln, Verzeichnisse |
+| [Handout zum Testen](docs/handout.md) | Einseiter für Tester: was es kann, Installation, Update |
 | [Architektur](docs/architecture.md) | Komponenten, Datenfluss, Tresor-Schema |
 | [Anforderungen](docs/requirements.md) | Funktionsliste mit Status |
 | [Entscheidungen](docs/decisions/) | Warum der Tresor so gebaut ist |
