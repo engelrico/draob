@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "draob",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Board-Passwörter verschlüsselt speichern, durchsuchen und mit einem Klick auf Miro-Boards einfügen. Alles lokal, ohne Konto.",
   "permissions": [
     "activeTab",
