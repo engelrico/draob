@@ -13,20 +13,14 @@ updates:
     labels: [dependencies]
     commit-message:
       prefix: 'chore(deps)'
-    # Major versions that must be migrated together, not one by one (see "Offene Hauptversionen" in docs/dependencies.md):
-    #  - ESLint 9+ needs the flat config format; eslint-plugin-react-hooks 7 flags code in src/popup/App.jsx
-    ignore:
-      - dependency-name: 'eslint'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'eslint-plugin-react-hooks'
-        update-types: ['version-update:semver-major']
-      # Jest 30: jest and jest-environment-jsdom must move together (a single bump mixes two Jest versions)
-      - dependency-name: 'jest'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'jest-environment-jsdom'
-        update-types: ['version-update:semver-major']
     groups:
-      # Build and test tooling: all minor and patch updates in one PR. Major versions arrive as single PRs.
+      # Tool families that must move together (a single bump would mix versions of the same tool):
+      # listed first, so every update type, majors included, lands in one PR per family.
+      jest:
+        patterns: [jest, jest-environment-jsdom]
+      eslint:
+        patterns: [eslint, '@eslint/js']
+      # Remaining build and test tooling: all minor and patch updates in one PR. Major versions arrive as single PRs.
       dev-tooling:
         dependency-type: development
         update-types: [minor, patch]

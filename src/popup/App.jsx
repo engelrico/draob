@@ -40,20 +40,28 @@ export default function App() {
 
   // Once unlocked: load the list and prefill the form from the active Miro board (once per open).
   useEffect(() => {
-    if (status !== 'unlocked' || board === undefined) return;
-    refresh().then(async (list) => {
+    if (status !== 'unlocked' || board === undefined) return undefined;
+    let stale = false; // a newer run (or unmount) makes this result obsolete
+    store.list().then(async (list) => {
+      if (stale) return;
+      setEntries(list);
       if (boardHandled.current || !board) return;
-      boardHandled.current = true;
       const known = findEntryByUrl(list, board.url);
+      const entry = known ? await store.reveal(known.id) : null;
+      if (stale || boardHandled.current) return;
+      boardHandled.current = true; // only now: an obsolete run must not block the next one
       if (known) {
-        setForm({ id: known.id, ...(await store.reveal(known.id)) });
+        setForm({ id: known.id, ...entry });
         setBoardState('known');
       } else {
         setForm({ ...EMPTY_FORM, title: board.title, url: board.url });
         setBoardState('new');
       }
     });
-  }, [status, board, refresh, store]);
+    return () => {
+      stale = true;
+    };
+  }, [status, board, store]);
 
   const changeTab = (id) => {
     setNotice(null);

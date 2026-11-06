@@ -1,14 +1,15 @@
 # AGENTS.md
 
 draob („board“ rückwärts, früher MiroHero) ist eine Chrome-Extension (Manifest V3), die Passwörter für Miro-Boards speichert. Nicht mit Miro verbunden.
-Stack: React 19, esbuild, Jest, ESLint, Prettier. Kein Backend.
+Stack: React 19, esbuild, Jest 30, ESLint 10 (Flat Config), Prettier. Kein Backend.
 
 ## Befehle
 ```bash
 npm ci              # Abhängigkeiten
 npm run build       # esbuild (scripts/build.mjs) baut nach dist/ (das ist die ladbare Extension)
 npm test            # Jest (tests/unit)
-npm run lint        # ESLint
+npm run coverage    # Jest mit Abdeckung (V8)
+npm run lint        # ESLint (eslint.config.mjs)
 npm run licenses    # Lizenzprüfung der ausgelieferten Pakete
 npm run format      # Prettier
 ```
@@ -25,7 +26,7 @@ Nach jeder Code-Änderung neu bauen und die Extension neu laden.
 | `src/shared/` | Geteilter Code: `crypto.js`, `storage.js` (Tresor v2), `entries.js` (Suche/Tags/Duplikate, rein), `miro.js` (Board-URLs), `tabs.js` (aktiver Tab), `download.js`, `ui/` (Komponenten), `theme.css` (Design-Tokens) |
 | `scripts/` | `build.mjs` (esbuild-Build), `jest-esbuild-transform.cjs` (Jest ohne Babel), `sync-manifest-version.js` (läuft bei `npm version`), `check-licenses.js` |
 | `public/` | Wird 1:1 nach `dist/` kopiert: `manifest.json`, HTML, Icons |
-| `tests/unit/` | Jest-Tests, spiegeln `src/shared/` |
+| `tests/unit/` | Jest-Tests, spiegeln `src/shared/` (plus Build-Test) |
 | `docs/` | Wissensbasis, siehe unten |
 | `specs/`, `.specify/` | spec-kit: Feature-Specs und Constitution |
 
@@ -60,8 +61,8 @@ startet den Workflow `Release`, der die ZIP als GitHub-Release anlegt. Ablauf un
 ## Wissensbasis (hier nachlesen, nicht raten)
 - `docs/architecture.md`: Komponenten, Datenfluss, Storage-Schema, bekannte Schulden
 - `docs/requirements.md`: Anforderungen mit IDs (F-xx)
-- `docs/decisions/`: Architekturentscheidungen (ADR): 0001 Masterpasswort/Schlüsselmodell, 0002 verschlüsselter Tresor v2, 0003 esbuild statt Webpack/Babel
-- `docs/dependencies.md`: ausgelieferte Bibliotheken, Update-Ablauf (Dependabot, Audit), offene Hauptversionen
+- `docs/decisions/`: Architekturentscheidungen (ADR): 0001 Masterpasswort/Schlüsselmodell, 0002 verschlüsselter Tresor v2, 0003 esbuild statt Webpack/Babel, 0004 ESLint 10/Jest 30/Overrides
+- `docs/dependencies.md`: ausgelieferte Bibliotheken, Update-Ablauf (Dependabot, Audit), Overrides und Restpunkte
 - `docs/releasing.md`: Release-Ablauf (npm version, Tag, Workflow)
 - `docs/compliance.md`: Chrome-Web-Store-Status, ehrlich mit offenen Punkten
 - `docs/manual-testing.md`: manueller Testablauf
@@ -71,4 +72,5 @@ startet den Workflow `Release`, der die ZIP als GitHub-Release anlegt. Ablauf un
 - Kein Auto-Lock, kein Wechsel des Masterpassworts, keine Drosselung falscher Eingaben (ADR-0001).
 - Ein vergessenes Masterpasswort bedeutet Datenverlust; es gibt nur den Reset (alles löschen) und Sicherungen, die das alte Passwort brauchen.
 - E2E-Tests fehlen noch (Playwright geplant).
+- Listen ohne `key` werden nicht gelintet (`eslint-plugin-react` fehlt bewusst, ADR-0004); React warnt zur Laufzeit.
 - Neue Zustandsänderungen im Formular immer als Funktion schreiben (`setForm((current) => ({ ...current, … }))`), nie aus dem Closure (`{ ...form, … }`): bei mehreren Eingaben im selben Augenblick (Browser-Autofill) gehen sonst Werte verloren.
