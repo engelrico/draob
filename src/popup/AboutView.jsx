@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ISSUES_URL,
   FEEDBACK_EMAIL,
@@ -11,24 +12,31 @@ import { appVersion } from '../shared/version';
 export default function AboutView() {
   const version = appVersion();
   const env = describeEnvironment();
+  const [copied, setCopied] = useState(false);
+
+  const copyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(FEEDBACK_EMAIL);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
-    <div className="view">
-      <div className="card">
+    <div className="view view--compact">
+      <div className="card card--compact">
         <h2 className="card__title" style={{ textAlign: 'left' }}>
           Über draob
         </h2>
-        <p className="muted" style={{ textAlign: 'left', marginTop: 6 }}>
-          Speichert Passwörter für Miro-Boards lokal und verschlüsselt (AES-GCM, Schlüssel aus
-          deinem Masterpasswort). Es verlässt nichts diesen Browser.
+        <p className="muted" style={{ textAlign: 'left', marginTop: 4 }}>
+          Speichert Miro-Board-Passwörter lokal und verschlüsselt. Es verlässt nichts diesen
+          Browser.
         </p>
       </div>
 
-      <div className="card support">
+      <div className="card card--compact support">
         <h2 className="section-title">Feedback</h2>
-        <p className="muted" style={{ textAlign: 'left' }}>
-          Fehler gefunden oder eine Idee? Ich freue mich über deine Rückmeldung.
-        </p>
         <a
           className="btn btn--secondary btn--block"
           href={ISSUES_URL}
@@ -37,14 +45,24 @@ export default function AboutView() {
         >
           🐞 Fehler oder Idee auf GitHub melden ↗
         </a>
-        <a
-          className="btn btn--secondary btn--block"
-          href={feedbackMailto({ version, env })}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          ✉️ Per E-Mail schreiben
-        </a>
+        <div className="row">
+          {/* No target: a mailto link opened in a new tab shows an empty page */}
+          <a
+            className="btn btn--secondary"
+            style={{ flex: 1 }}
+            href={feedbackMailto({ version, env })}
+          >
+            ✉️ E-Mail schreiben
+          </a>
+          <button
+            type="button"
+            className="btn btn--secondary"
+            style={{ flex: 1 }}
+            onClick={copyAddress}
+          >
+            {copied ? '✓ Kopiert' : '📋 Adresse kopieren'}
+          </button>
+        </div>
         {REVIEW_URL && (
           <a
             className="btn btn--secondary btn--block"
@@ -56,18 +74,13 @@ export default function AboutView() {
           </a>
         )}
         <p className="muted card__meta">
-          Version {version || 'unbekannt'} · {env.browser}
-          <br />
-          {FEEDBACK_EMAIL}
+          {FEEDBACK_EMAIL} · v{version || '?'} · {env.browser}
         </p>
       </div>
 
       {DONATION_URL && (
-        <div className="card support">
+        <div className="card card--compact support">
           <h2 className="section-title">Gefällt dir draob?</h2>
-          <p className="muted" style={{ textAlign: 'left' }}>
-            draob ist kostenlos und bleibt es. Wenn es dir Zeit spart, freue ich mich über ein Bier.
-          </p>
           <a
             className="btn btn--secondary btn--block"
             href={DONATION_URL}
