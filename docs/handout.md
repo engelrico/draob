@@ -1,5 +1,7 @@
 # draob testen: Handout
 
+[Als PDF herunterladen](handout.pdf)
+
 **draob** ist eine Chrome-Extension, die die Passwörter deiner Miro-Boards verschlüsselt speichert, das richtige Board beim Öffnen erkennt und das Passwort mit einem Klick einfügt.
 Alles bleibt lokal in deinem Browser: keine Konten, kein Server, kein Tracking. draob ist ein unabhängiges Projekt und nicht mit Miro verbunden.
 

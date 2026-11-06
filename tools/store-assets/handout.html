@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>draob testen: Handout</title>
+<style>
+@page { size: A4; margin: 10mm 13mm; }
+* { box-sizing: border-box; }
+body { font: 9.4pt/1.35 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1c1c20; margin: 0; }
+h1 { font-size: 21pt; margin: 0 0 2px; }
+h1 span { color: #e8b100; }
+h2 { font-size: 11.5pt; margin: 8px 0 3px; border-bottom: 2px solid #ffd02f; padding-bottom: 2px; }
+p { margin: 3px 0; }
+.lead { font-size: 10.5pt; }
+.shots { display: flex; gap: 10px; margin: 8px 0 2px; }
+.shots figure { flex: 1; margin: 0; text-align: center; font-size: 8pt; color: #555; }
+.shots img { width: 100%; max-height: 66mm; object-fit: cover; object-position: top; border-radius: 8px; border: 1px solid #ccc; }
+ul, ol { margin: 3px 0; padding-left: 18px; }
+li { margin: 1.5px 0; }
+.cols { display: flex; gap: 18px; }
+.cols > div { flex: 1; }
+code { background: #f1f1f3; padding: 0 3px; border-radius: 3px; font-size: 9pt; }
+.note { background: #fff6d6; border-left: 4px solid #ffd02f; padding: 5px 9px; margin-top: 8px; font-size: 9pt; }
+.foot { margin-top: 8px; font-size: 8.5pt; color: #555; }
+</style></head><body>
+<h1>draob <span>testen</span></h1>
+<p class="lead"><b>Schluss mit „Wie war nochmal das Passwort für dieses Board?“</b> draob ist eine Chrome-Extension, die die Passwörter deiner Miro-Boards verschlüsselt speichert, das richtige Board beim Öffnen erkennt und das Passwort mit einem Klick einfügt. Alles bleibt lokal in deinem Browser: keine Konten, kein Server, kein Tracking. Unabhängiges Projekt, nicht mit Miro verbunden.</p>
+
+<div class="shots">
+  <figure><img src="../../docs/screenshots/home-known.png" alt=""><br>Board erkannt: ein Klick fügt das Passwort ein</figure>
+  <figure><img src="../../docs/screenshots/list.png" alt=""><br>Liste mit Favoriten, Tags und Link-Symbol</figure>
+  <figure><img src="../../docs/screenshots/search.png" alt=""><br>Suche findet Titel, URL und Tags sofort</figure>
+</div>
+
+<h2>Das kann draob</h2>
+<div class="cols"><ul>
+  <li><b>Erkennt dein Board:</b> URL und Titel werden übernommen</li>
+  <li><b>Passwort mit einem Klick:</b> „In Miro einfügen“, Absenden tust du selbst</li>
+</ul><ul>
+  <li><b>Suche, Tags, Favoriten</b>, Link-Symbol öffnet die gespeicherte Seite</li>
+  <li><b>Sicherung:</b> verschlüsselten Tresor als Datei speichern und wiederherstellen</li>
+</ul></div>
+
+<h2>Installieren (ca. 2 Minuten, Chrome am Computer)</h2>
+<p>draob ist noch nicht im Chrome Web Store und wird als „entpackte Erweiterung“ geladen.</p>
+<ol>
+  <li><b>ZIP laden:</b> <code>github.com/engelrico/draob/releases/latest</code> öffnen und <code>draob-&lt;Version&gt;.zip</code> herunterladen.</li>
+  <li><b>Entpacken</b> (Doppelklick). Der Ordner muss <b>dauerhaft liegen bleiben</b>, z. B. in „Dokumente“.</li>
+  <li>In Chrome <code>chrome://extensions</code> öffnen, oben rechts <b>Entwicklermodus</b> einschalten.</li>
+  <li><b>Entpackte Erweiterung laden</b> klicken, den entpackten Ordner wählen (der mit <code>manifest.json</code>).</li>
+  <li>Optional: über das Puzzle-Symbol draob <b>anheften</b>.</li>
+</ol>
+
+<h2>Benutzen</h2>
+<ol>
+  <li>draob-Icon klicken, beim ersten Mal ein <b>Masterpasswort</b> festlegen (mind. 8 Zeichen).</li>
+  <li>Miro-Board öffnen, draob-Icon klicken: Titel und URL sind ausgefüllt, Board-Passwort eintragen, speichern.</li>
+  <li>Nächstes Mal: <b>In Miro einfügen</b> klicken, in Miro bestätigen.</li>
+</ol>
+
+<div class="note"><b>Wichtig:</b> Vergisst du das Masterpasswort, sind die Daten weg (Absicht, keine Wiederherstellung). draob ist ein früher Prototyp ohne unabhängige Sicherheitsprüfung, für Hochsicherheits-Zugangsdaten nimm einen etablierten Passwortmanager. Chrome zeigt bei Erweiterungen im Entwicklermodus gelegentlich einen Hinweis, den du schließen kannst.</div>
+
+<h2>Update und Feedback</h2>
+<p><b>Update:</b> unter Config eine Sicherung exportieren, neue ZIP in denselben Ordner entpacken, in <code>chrome://extensions</code> bei draob auf <b>Neu laden</b> klicken. Die Einträge bleiben erhalten (ab v0.1.2; bei Version bis v0.1.1 ändert sich die ID einmalig, dann Sicherung wiederherstellen).</p>
+<p><b>Feedback:</b> im About-Tab von draob (GitHub oder E-Mail) oder an <b>draob@engelrico.de</b>. Bitte keine Passwörter oder Board-Links mitschicken.</p>
+<p class="foot">Details: github.com/engelrico/draob · Stand v0.1.2</p>
+</body></html>
