@@ -41,6 +41,7 @@ Es gibt kein Manifest, HTML oder Quellcode im Repo-Root.
 6. Styling nur über CSS-Variablen aus `src/shared/theme.css` (keine Hex-Farben in Komponenten, keine Inline-Styles außer für Layout-Ausnahmen).
 7. Neue Laufzeit-Bibliotheken nur mit Begründung, `npm run licenses` und sauberem `npm audit --omit=dev`; nichts per CDN nachladen (siehe `docs/dependencies.md`).
 8. Der Spendenhinweis (`src/shared/support.js`) erscheint nur im About-Tab und in der README, nie als Popup, Overlay oder Aufforderung beim Start.
+9. Identität: Als Kontakt steht überall nur `draob@engelrico.de`. Commits laufen mit der GitHub-Noreply-Adresse (`12011677+engelrico@users.noreply.github.com`); keine private E-Mail-Adresse in Code, Docs oder Commit-Metadaten.
 
 ## Releases
 Version nie von Hand ändern: `npm version <patch|minor|major>` gleicht `package.json` und `public/manifest.json` an, committet und taggt. Ein Tag-Push `vX.Y.Z`

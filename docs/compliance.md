@@ -23,6 +23,7 @@ Stand 2026-11-05. Ein Haken heißt: im Repo belegt. Alles andere ist offen.
 | Manuelle Tests | offen | Release-Checkliste in `docs/manual-testing.md`, noch nicht in echtem Chrome durchgeführt |
 | Security-Review | offen | |
 | Performance-Ziele (UI < 200 ms) | ungemessen | |
+| Kontaktadresse | festgelegt: `draob@engelrico.de` (in README, SECURITY.md, Datenschutzerklärung, Listing) | Alias/Postfach muss bei der Domain eingerichtet sein und Mails annehmen (bitte testen) |
 | Entwicklerkonto, Trader-Angaben, Namensprüfung | offen (Nutzer) | |
 
 Release: Tag `vX.Y.Z` startet den Workflow `Release` und legt `draob-<Version>.zip` als GitHub-Release an (`docs/releasing.md`). `Package extension` (manuell) baut nur ein Artefakt. Upload in den Store erfolgt von Hand.

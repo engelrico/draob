@@ -9,7 +9,7 @@ draob verarbeitet deine Daten **ausschließlich lokal in deinem Browser**. Es gi
 Werbe-Dienste und keine Weitergabe an Dritte. Der Entwickler hat keinen Zugriff auf deine Daten.
 
 ## Verantwortlicher
-[Vor- und Nachname, Anschrift, E-Mail-Adresse des Entwicklers]. Da keine Daten an den Entwickler übertragen werden, verarbeitet der
+[Vor- und Nachname, Anschrift des Entwicklers], E-Mail: draob@engelrico.de. Da keine Daten an den Entwickler übertragen werden, verarbeitet der
 Entwickler selbst keine personenbezogenen Daten der Nutzer.
 
 ## Welche Daten draob speichert (nur auf deinem Gerät)
@@ -50,7 +50,7 @@ Inhaberin.
 Wenn sich etwas an der Datenverarbeitung ändert, wird diese Seite aktualisiert und das Datum oben angepasst.
 
 ## Kontakt
-[E-Mail-Adresse für Fragen zum Datenschutz]
+Fragen zum Datenschutz und zu dieser Erklärung: draob@engelrico.de
 
 ---
 
@@ -59,4 +59,4 @@ draob processes everything locally in your browser. Titles, URLs, tags and board
 from your master password with PBKDF2) in the extension's local storage. There is no server, no account, no analytics, no tracking and no data
 is sent to the developer or to third parties. The extension runs only on `https://*.miro.com/app/board/*`; it reads the URL and title of the
 active tab only when you click its icon, and fills a password field only when you click "In Miro einfügen". You can erase all data at any time
-via "Verwaltung → Tresor zurücksetzen". draob is not affiliated with Miro. Contact: [email].
+via "Verwaltung → Tresor zurücksetzen". draob is not affiliated with Miro. Contact: draob@engelrico.de.
