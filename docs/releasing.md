@@ -1,7 +1,7 @@
 # Releases
 
 Ein Release ist ein fertiger Download (`draob-<Version>.zip`) auf der GitHub-Seite unter **Releases**. Er entsteht aus einem Versions-Tag.
-Dieselbe ZIP lädst du später in den Chrome Web Store hoch.
+Für den Chrome Web Store baust du das Paket ohne Schlüssel (`npm run build -- --store`, siehe unten).
 
 ## Neues Release in drei Befehlen
 ```bash
@@ -40,3 +40,13 @@ Actions → **Release** → **Run workflow**. Das baut und lädt nur die ZIP als
 - **Version für Chrome:** 1 bis 4 Zahlenblöcke, keine Zusätze wie `-beta`. Jeder Store-Upload braucht eine höhere Version als der vorherige.
 - **Installation aus der ZIP:** entpacken → `chrome://extensions` → Entwicklermodus → „Entpackte Erweiterung laden“. Chrome installiert Erweiterungen außerhalb des
   Stores nicht per Doppelklick.
+
+## Feste Erweiterungs-ID (Installation ohne Store)
+
+Eine entpackte Erweiterung ohne `key` im Manifest bekommt ihre ID aus dem Ordnerpfad. Ein anderer Ordner hieße eine andere ID und damit einen leeren Tresor.
+Deshalb fügt `npm run build` den öffentlichen Schlüssel aus `scripts/extension-key.txt` als `key` in `dist/manifest.json` ein. Die ID ist dann immer `kifhfncchlpbohakjahaafjmfhfcaabj`, egal, wohin die ZIP entpackt wird.
+`public/manifest.json` enthält den Schlüssel bewusst nicht.
+
+- **Schlüssel:** nur der öffentliche Teil liegt im Repo. Der private Teil wurde verworfen, er wird nur zum Signieren eigener CRX-Dateien gebraucht. Den Schlüssel nie austauschen, sonst ändert sich die ID wieder und alle müssen ihre Sicherung einspielen.
+- **Store-Paket:** `npm run build -- --store` lässt den Schlüssel weg (so baut der Workflow „Package extension“). Der Store vergibt eine eigene ID. Wer vom ZIP-Weg auf die Store-Version wechselt, hat dort einen neuen, leeren Tresor und spielt die Sicherung ein.
+- **Einmalig beim Umstieg:** Wer bisher eine Version ohne `key` geladen hat (bis v0.1.1), bekommt mit der ersten Version mit `key` eine neue ID. Vorher in der alten Installation exportieren, danach in der neuen wiederherstellen.

@@ -91,7 +91,7 @@ Dann in Chrome:
 3. **Entpackte Erweiterung laden** und den Ordner `dist/` wählen
 4. Das Icon über das Puzzle-Symbol an die Leiste anheften
 
-Nach einem Update: `npm run build` und in `chrome://extensions` auf **Neu laden** klicken.
+Nach einem Update: `npm run build` und in `chrome://extensions` auf **Neu laden** klicken. Die Erweiterungs-ID ist fest, deine Einträge bleiben auch erhalten, wenn du eine neue ZIP in einen anderen Ordner entpackst. Wer von einer Version bis v0.1.1 kommt, exportiert vorher die Sicherung und stellt sie in der neuen Version wieder her (die ID wechselt einmalig).
 Für das Badge auf einem Board die Miro-Seite einmal neu laden.
 
 ## Sicherheit & Ehrlichkeit

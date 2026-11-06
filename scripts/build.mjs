@@ -13,6 +13,16 @@ const outdir = path.resolve(root, flag > -1 ? process.argv[flag + 1] : 'dist');
 fs.rmSync(outdir, { recursive: true, force: true });
 fs.cpSync(path.join(root, 'public'), outdir, { recursive: true });
 
+// Stable extension ID for installs outside the Chrome Web Store: an unpacked extension without a
+// manifest "key" gets its ID (and therefore its storage) from the folder path. The key is public.
+// `--store` leaves it out: the Web Store assigns its own ID (see docs/releasing.md).
+if (!process.argv.includes('--store')) {
+  const manifestPath = path.join(outdir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.key = fs.readFileSync(path.join(root, 'scripts', 'extension-key.txt'), 'utf8').trim();
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
 const common = {
   absWorkingDir: root,
   outdir,

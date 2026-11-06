@@ -50,6 +50,7 @@ Mindestversion laut Manifest: Chrome 110.
 ## Oberfläche und Qualität
 
 - [ ] About-Tab: Spendenlink öffnet paypal.me in neuem Tab (nur auf Klick, kein Popup beim Start)
+- [ ] Feste ID: Eine Build-ZIP in zwei verschiedene Ordner entpacken und nacheinander laden: `chrome://extensions` zeigt beide Male `kifhfncchlpbohakjahaafjmfhfcaabj`, der Tresor bleibt erhalten
 - [ ] About-Tab, Feedback: „Fehler oder Idee auf GitHub melden“ zeigt die Vorlagen-Auswahl (Fehler, Idee); „E-Mail“ öffnet das Mailprogramm mit Entwurf an draob@engelrico.de (kein leerer neuer Tab; Betreff mit Version, Version/Browser/System im Text, Hinweis „keine Passwörter“)
 - [ ] „Kopieren“ legt die Adresse in die Zwischenablage; der ganze About-Tab passt ohne Scrollen ins Popup; die Karte zeigt Adresse, Version und Browser als Text
 - [ ] Popup öffnet in unter 200 ms, Tabs reagieren sofort
